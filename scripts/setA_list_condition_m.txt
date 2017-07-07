@@ -1,0 +1,10 @@
+1	2_rule
+2	3_rule
+3	3_rule
+4	2_rule
+5	3_rule
+6	3_rule
+7	2_rule
+8	3_rule
+9	2_rule
+10	2_rule
