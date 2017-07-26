@@ -18,8 +18,8 @@ def ogama_coordiates(row):
 
 # infers AOI based on the gaze coordinates. AOIs defined in settings
 def add_aoi(row):
-    x = float(row['Gaze(x)_ogama'])
-    y = float(row['Gaze(y)_ogama'])
+    x = float(row['Gaze(x)'])
+    y = float(row['Gaze(y)'])
     condition = row['Condition']
     row['AOI'] = 'N' #nowhere
     if x == settings.default_value or y == settings.default_value:
@@ -30,39 +30,74 @@ def add_aoi(row):
             row['AOI'] = aoi_data[4]
             return
 
+def get_next_window(x, y, t):
+    xwindow = x[0:1]
+    ywindow = y[0:1]
+    twindow = t[0:1]
+
+    MAX_TIME_IN_WINDOW = 300
+    index = 1
+    start_time = twindow[0]
+    while (
+        # if want to enforce max num of pts in window
+        # len(xwindow) < max_pts_in_window
+        index < len(x)
+        and t[index] - start_time <= MAX_TIME_IN_WINDOW
+    ):
+        xwindow.append(x[index])
+        ywindow.append(y[index])
+        twindow.append(t[index])
+        index += 1
+
+    return xwindow, ywindow, twindow
+
 # IDs fixations - must be run before describe_fixations function
 # gaze data grouped as one fixation if within 100ms the dispertation <= 35px
+# make function to get the next x&y within time_limit, xwindow and ywindo take the result of that func
+# change this to keep track of time (t) similar to how i keep track of x&y, need to check if t is within time window
 def identify_fixations(rows):
     fixs = []
     counter = 0
-    x = [float(row['Gaze(x)_ogama']) for row in rows]
-    y = [float(row['Gaze(y)_ogama']) for row in rows]
-    while len(x) > 1:
-        xwindow = x[0:12]
-        ywindow = y[0:12] 
-        if (abs(float(max(xwindow)) - float(min(xwindow))) <= 35) and (abs(float(max(ywindow)) - float(min(ywindow))) <= 35):
-            i = 12
-            while (abs(float(max(xwindow)) - float(min(xwindow))) <= 35) and (abs(float(max(ywindow)) - float(min(ywindow)))) <= 35 and i < len(x):
+    MAX_MS_BETWEEN_PTS_IN_FIXATION = 40
+    MIN_PTS_IN_WINDOW = 6
+    MIN_MS_WINDOW = 100
+    DIST_PIX = 35
+    x = [float(row['Gaze(x)']) for row in rows]
+    y = [float(row['Gaze(y)']) for row in rows]
+    t = [int(row['Time']) for row in rows]
+    while len(x) > 0:
+        xwindow, ywindow, twindow = get_next_window(x, y, t)
+        if (
+            len(xwindow) >= MIN_PTS_IN_WINDOW
+            and twindow[-1] - twindow[0] >= MIN_MS_WINDOW
+            and abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
+            and abs(float(max(ywindow)) - float(min(ywindow))) <= DIST_PIX
+        ):
+            i = len(xwindow)
+            # length of window will always be > 1
+            prev_time = twindow[i-2]
+            while (
+                abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX 
+                and abs(float(max(ywindow)) - float(min(ywindow))) <= DIST_PIX
+                and twindow[i-1] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
+                and i < len(x)
+            ):
                 xwindow.append(x[i])
                 ywindow.append(y[i])
+                twindow.append(t[i])
+                prev_time = twindow[i-1]
                 i += 1
             counter += 1
             fixs += [counter] * (len(xwindow)-1)
             x = x[len(xwindow)-1:]
             y = y[len(ywindow)-1:]
+            t = t[len(twindow)-1:]
         else:
             x = x[1:]
             y = y[1:]
+            t = t[1:]
             fixs += [-1]
 
-    #classify last point
-    if len(x) != 0:
-        xwindow.append(x[0])
-        ywindow.append(y[0])
-        if (abs(float(max(xwindow)) - float(min(xwindow))) <= 35) and (abs(float(max(ywindow)) - float(min(ywindow))) <= 35):
-            fixs += [counter]
-        else:
-            fixs += [-1]
     if len(fixs) != len(rows):
         raise Exception('number of fixations is not the same as number of rows')
     for i, row in enumerate(rows):
@@ -206,8 +241,10 @@ def summary_gaze_data(rows):
                 'Time_toFirst_Fix_N': settings.default_value,
                 'VisualSearch_R' : settings.default_value,
                 'SearchTime_R': settings.default_value,
-                'VisualSearch_R' : settings.default_value,
-                'SearchTime_R': settings.default_value
+                'VisualSearch_I' : settings.default_value,
+                'SearchTime_I': settings.default_value,
+                'VisualSearch_Itrans': settings.default_value,
+                'SearchTime_Itrans': settings.default_value
             }
             trial_to_default_vals[trial] = {}
 
@@ -236,6 +273,7 @@ def summary_gaze_data(rows):
     for trial, aois_times in trial_to_aois.iteritems():
         trial_to_data[trial]['VisualSearch_R'],trial_to_data[trial]['SearchTime_R']  = get_visual_search(aois_times)
         trial_to_data[trial]['VisualSearch_I'],trial_to_data[trial]['SearchTime_I']  = get_last_I(aois_times)
+        trial_to_data[trial]['VisualSearch_Itrans'],trial_to_data[trial]['SearchTime_Itrans']  = get_last_Itrans(aois_times)
 
     return trial_to_data
 
@@ -304,6 +342,35 @@ def get_last_Itrans(aois_times):
                 #time_start = time
 
             if match_count == 2:
+                search_last_Itrans = start
+                time_last_Itrans = time
+                break
+
+    return search_last_Itrans, time_last_Itrans
+
+def get_I_fixs(aois_times):
+    visual_search = settings.default_value
+    search_time = settings.default_value
+
+    start = -1
+    index = -1
+    match_count = 0
+    I_count = 0
+    for aoi, time in aois_times:
+        index += 1
+
+        if aoi == 'N' or aoi == 'Q':
+            continue
+        elif aoi[0] != 'R':
+            match_count = 0
+            start = -1
+        else:
+            match_count += 1
+            if start == -1:
+                start = index
+                #time_start = time
+
+            if match_count == 3:
                 visual_search = start
                 search_time = time
                 break

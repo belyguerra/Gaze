@@ -21,7 +21,8 @@ summary_headers = [
     'PID', 'Block', 'Trial', 'Condition', 'ACC', 'RT', 
     'TotalFixations', 'TotalFixations_N', 'TotalFixation_R', 'TotalFixations_I', 'TotalFixations_Q',
     'TotalFixTime', 'TotalFixTime_N', 'TotalFixTime_R', 'TotalFixTime_I', 'TotalFixTime_Q',
-    'Time_toFirst_Fix_R', 'Time_toFirst_Fix_I', 'Time_toFirst_Fix_Q', 'VisualSearch_R',
+    'Time_toFirst_Fix_R', 'Time_toFirst_Fix_I', 'Time_toFirst_Fix_Q', 'VisualSearch_R', 'SearchTime_R',
+    'VisualSearch_I','SearchTime_I','VisualSearch_Itrans', 'SearchTime_Itrans',
     'TotalTransitions', 'Q-R', 'Q-I', 'R-R', 'R-I', 'I-I'
 ]
 
@@ -36,15 +37,15 @@ root_dir = '/home/bunge/bguerra/EyeTracking'
 #rawfiles_dir = os.path.join(root_dir, 'Raw_Data/Transinf_data/LSAT_T1') if isTime1==True else os.path.join(root_dir, 'Raw_Data/Transinf_data/LSAT_T2')
 
 
-rawfiles_dir = os.path.join(root_dir, 'Raw_Data/Transinf_data/LSAT_T2')
+rawfiles_dir = os.path.join(root_dir, 'Raw_Data/Transinf_data/LSAT_T1')
 
 # output directory for processed data
 #output_gaze_processed_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/preprocessed/T1') if isTime1==True else os.path.join(root_dir, 'gaze_analysis/data/transif/preprocessed/T2')
 #output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/results/T1') if isTime1==True else os.path.join(root_dir, 'gaze_analysis/data/transif/results/T2')
 
-output_gaze_processed_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/preprocessed/T2')
+output_gaze_processed_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/preprocessed/T1')
 
-output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/results/T2')
+output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/results/T1')
 
 #for testing locally
 #isTime1 = True
@@ -55,7 +56,8 @@ output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/results/T2')
 #dic_dir = root_dir
 
 # directory to dictionaries
-dic_dir = '/home/bunge/bguerra/EyeTracking/scripts/new'
+#dic_dir = '/home/bunge/bguerra/EyeTracking/scripts/new'
+dic_dir = '/home/bunge/bguerra/Desktop/git/eyetracking/gaze/scripts/'
 filepath_dic_cond_A = os.path.join(dic_dir, 'setA_list_condition.txt')
 filepath_dic_cond_B = os.path.join(dic_dir, 'setB_list_condition.txt')
 filepath_dic_pic_A = os.path.join(dic_dir, 'setA_list_image.txt')
@@ -67,54 +69,57 @@ filepath_dic_pic_B = os.path.join(dic_dir, 'setB_list_image.txt')
 default_value = np.nan
 
 #(xmin, xmax, ymin, ymax)
+#AOI_pos = [Q, Scale1, Scale2, Scale3, Scale4]
+AOI_pos = [[-250,250,-200,-450], [-575,-325,25,375], [-275,-25,25,375], [25,275,25,375], [325,575,25,375]]
+
 AOIs = {
 
     'IneqEq0': [
-        (400, 792, 625, 875, 'Q'), 
-        (348, 601, 178, 472, 'R1'),
-        (631, 884, 178, 472, 'R2'),
-        (65, 318, 178, 472, 'I1'),
-        (914, 1167, 178, 472, 'I2'),
+        AOI_pos[0] + ['Q'], 
+        AOI_pos[2] + ['R1'],
+        AOI_pos[3] + ['R2'],
+        AOI_pos[1] + ['I1'],
+        AOI_pos[4] + ['I2'],
     ],
 
     'IneqEq1': [
-        (400, 792, 625, 875, 'Q'),
-        (65, 318, 178, 472, 'R1'),
-        (631, 884, 178, 472, 'R2'),
-        (348, 601, 178, 472, 'I1'),
-        (914, 1167, 178, 472, 'I2')
+        AOI_pos[0] + ['Q'],
+        AOI_pos[1] + ['R1'],
+        AOI_pos[3] + ['R2'],
+        AOI_pos[2] + ['I1'],
+        AOI_pos[4] + ['I2'],
     ],
 
     'IneqEq2': [
-        (400, 792, 625, 875, 'Q'),
-        (65, 318, 178, 472, 'R1'),
-        (914, 1167, 178, 472, 'R2'),
-        (348, 601, 178, 472, 'I1'),
-        (631, 884, 178, 472, 'I2')
+        AOI_pos[0] + ['Q'],
+        AOI_pos[1] + ['R1'],
+        AOI_pos[4] + ['R2'],
+        AOI_pos[2] + ['I1'],
+        AOI_pos[3] + ['I2'],
     ],
 
     'IneqIneq0': [
-        (400, 792, 625, 875, 'Q'),
-        (631, 884, 178, 472, 'R1'),
-        (914, 1167, 178, 472, 'R2'),
-        (65, 318, 178, 472, 'I1'),
-        (348, 601, 178, 472, 'I2')
+        AOI_pos[0] + ['Q'],
+        AOI_pos[3] + ['R1'],
+        AOI_pos[4] + ['R2'],
+        AOI_pos[1] + ['I1'],
+        AOI_pos[2] + ['I2'],
     ],
 
     'IneqIneq1': [
-        (400, 792, 625, 875, 'Q'),
-        (348, 601, 178, 472, 'R1'),
-        (914, 1167, 178, 472, 'R2'),
-        (65, 318, 178, 472, 'I1'),
-        (631, 884, 178, 472, 'I2')
+        AOI_pos[0] + ['Q'],
+        AOI_pos[2] + ['R1'],
+        AOI_pos[4] + ['R2'],
+        AOI_pos[1] + ['I1'],
+        AOI_pos[3] + ['I2'],
     ],
 
     'IneqIneq2': [
-        (400, 792, 625, 875, 'Q'),
-        (65, 318, 178, 472, 'R1'),
-        (914, 1167, 178, 472, 'R2'),
-        (348, 601, 178, 472, 'I1'),
-        (631, 884, 178, 472, 'I2')
+        AOI_pos[0] + ['Q'],
+        AOI_pos[1] + ['R1'],
+        AOI_pos[4] + ['R2'],
+        AOI_pos[2] + ['I1'],
+        AOI_pos[3] + ['I2'],
      ]
 }
 

@@ -16,7 +16,7 @@ def main():
     dic_pic_B = df_utils.get_trial_dic(settings.filepath_dic_pic_B)
 
     default_row = {}
-    for subjid in range(201,297):
+    for subjid in range(100,197):
         print '\n processing subject %d' %subjid
         try:
             for block in ['A', 'B']:
@@ -133,11 +133,11 @@ def main():
             raise
 
     #output the fixation data for the grid plot
-    output_fixationfile = os.path.join(settings.output_agg_dir, 'LSAT_TI_fixations.tsv')
+    output_fixationfile = os.path.join(settings.output_agg_dir, 'LSAT_TI_fixations_test.tsv')
     df_utils.output_rows(output_fixationfile, fixation_rows)
 
     # print the summary file
-    output_summaryfile = os.path.join(settings.output_agg_dir, 'LSAT_TI_summary_gaze.tsv')
+    output_summaryfile = os.path.join(settings.output_agg_dir, 'LSAT_TI_summary_gaze_test.tsv')
     df_utils.output_rows(output_summaryfile, summary_rows)
 
 
