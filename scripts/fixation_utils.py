@@ -35,7 +35,7 @@ def get_next_window(x, y, t):
     ywindow = y[0:1]
     twindow = t[0:1]
 
-    MAX_TIME_IN_WINDOW = 300
+    MAX_TIME_IN_WINDOW = 150
     index = 1
     start_time = twindow[0]
     while (

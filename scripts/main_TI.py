@@ -16,7 +16,7 @@ def main():
     dic_pic_B = df_utils.get_trial_dic(settings.filepath_dic_pic_B)
 
     default_row = {}
-    for subjid in range(100,197):
+    for subjid in range(200,297):
         print '\n processing subject %d' %subjid
         try:
             for block in ['A', 'B']:
@@ -86,10 +86,9 @@ def main():
                     summary_data['RT'] = float(row['RT'])
 
                     if trial not in summary_gaze_data:
-                        print 'Warning: missing fixation data for trial %d!' % trial
-
-                    if trial not in transition_data:
-                        print 'Warning: missing transitions for trial %d!' % trial
+                        print 'Warning: missing fix/trans data for trial %d!' % trial
+                        for key in settings.gaze_headers:
+                            summary_data[key] = settings.default_value
 
                     if trial in summary_gaze_data:
                         for key, val in summary_gaze_data[trial].iteritems():

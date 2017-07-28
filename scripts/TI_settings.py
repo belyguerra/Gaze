@@ -17,14 +17,14 @@ behavcols = ['Trial', 'Infer', 'CorrectAnswer', 'SubjectResponse', 'ProbRel', 'R
 fixation_headers = ['PID', 'Block', 'Trial', 'Condition', 'Fixation', 'AOI', 'Fixation_Dur', 'Fixation_Start']
 
 #headers for the summary file that has aggregate data from all subjects
-summary_headers = [
-    'PID', 'Block', 'Trial', 'Condition', 'ACC', 'RT', 
-    'TotalFixations', 'TotalFixations_N', 'TotalFixation_R', 'TotalFixations_I', 'TotalFixations_Q',
+gaze_headers = ['TotalFixations', 'TotalFixations_N', 'TotalFixation_R', 'TotalFixations_I', 'TotalFixations_Q',
     'TotalFixTime', 'TotalFixTime_N', 'TotalFixTime_R', 'TotalFixTime_I', 'TotalFixTime_Q',
     'Time_toFirst_Fix_R', 'Time_toFirst_Fix_I', 'Time_toFirst_Fix_Q', 'VisualSearch_R', 'SearchTime_R',
     'VisualSearch_I','SearchTime_I','VisualSearch_Itrans', 'SearchTime_Itrans',
-    'TotalTransitions', 'Q-R', 'Q-I', 'R-R', 'R-I', 'I-I'
-]
+    'TotalTransitions', 'Q-R', 'Q-I', 'R-R', 'R-I', 'I-I']
+
+summary_headers = ['PID', 'Block', 'Trial', 'Condition', 'ACC', 'RT']+gaze_headers
+    
 
 ###################################################################################
 
@@ -37,15 +37,15 @@ root_dir = '/home/bunge/bguerra/EyeTracking'
 #rawfiles_dir = os.path.join(root_dir, 'Raw_Data/Transinf_data/LSAT_T1') if isTime1==True else os.path.join(root_dir, 'Raw_Data/Transinf_data/LSAT_T2')
 
 
-rawfiles_dir = os.path.join(root_dir, 'Raw_Data/Transinf_data/LSAT_T1')
+rawfiles_dir = os.path.join(root_dir, 'Raw_Data/Transinf_data/LSAT_T2')
 
 # output directory for processed data
 #output_gaze_processed_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/preprocessed/T1') if isTime1==True else os.path.join(root_dir, 'gaze_analysis/data/transif/preprocessed/T2')
 #output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/results/T1') if isTime1==True else os.path.join(root_dir, 'gaze_analysis/data/transif/results/T2')
 
-output_gaze_processed_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/preprocessed/T1')
+output_gaze_processed_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/preprocessed/T2')
 
-output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/results/T1')
+output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/results/T2')
 
 #for testing locally
 #isTime1 = True
