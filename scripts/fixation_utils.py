@@ -81,7 +81,7 @@ def identify_fixations(rows):
             undo_end_fixation = True
             while undo_end_fixation:
                 while (
-                    abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX 
+                    abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
                     and abs(float(max(ywindow)) - float(min(ywindow))) <= DIST_PIX
                     and twindow[i-1] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
                     and i < len(x)
@@ -106,7 +106,7 @@ def identify_fixations(rows):
                     plus_n_prev_time = plus_n_twindow[i + n - 1]
 
                     if (
-                        abs(float(max(plus_n_xwindow)) - float(min(plus_n_xwindow))) <= DIST_PIX 
+                        abs(float(max(plus_n_xwindow)) - float(min(plus_n_xwindow))) <= DIST_PIX
                         and abs(float(max(plus_n_ywindow)) - float(min(plus_n_ywindow))) <= DIST_PIX
                         and plus_n_twindow[i+n] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
                     ):
@@ -152,21 +152,21 @@ def get_transitions(rows):
 
         if fixation == settings.default_value or fixation == -1:
             continue
-                
+
         if trial_num not in trial_to_data:
             trial_to_data[trial_num] = {}
-        
+
         if fixation not in trial_to_data[trial_num]:
             trial_to_data[trial_num][fixation] = []
-            
+
         trial_to_data[trial_num][fixation].append(aoi)
-        
+
     # iterate data and add transitions to dictionary
     for trial_num, data in trial_to_data.iteritems():
-        
+
         if trial_num not in trial_to_transitions:
             trial_to_transitions[trial_num] = []
-        
+
         sorted_fixations = sorted(data.keys())
         if len(sorted_fixations) > 1:
             prev_aoi = Counter(data[sorted_fixations[0]]).most_common()[0][0]
@@ -255,24 +255,24 @@ def summary_gaze_data(rows):
         trial = int(row['Trial'])
         if trial not in trial_to_data:
             trial_to_data[trial]= {
-                'TotalFixations': 0, 
-                'TotalFixations_N': 0, 
+                'TotalFixations': 0,
+                'TotalFixations_N': 0,
                 'TotalFixations_R1': 0,
-                'TotalFixations_R2': 0, 
+                'TotalFixations_R2': 0,
                 'TotalFixations_I1': 0,
-                'TotalFixations_I2': 0, 
+                'TotalFixations_I2': 0,
                 'TotalFixations_Q': 0,
-                'TotalFixTime': 0, 
-                'TotalFixTime_N': 0, 
+                'TotalFixTime': 0,
+                'TotalFixTime_N': 0,
                 'TotalFixTime_R1': 0,
-                'TotalFixTime_R2': 0, 
+                'TotalFixTime_R2': 0,
                 'TotalFixTime_I1': 0,
-                'TotalFixTime_I2': 0, 
+                'TotalFixTime_I2': 0,
                 'TotalFixTime_Q': 0,
                 'Time_toFirst_Fix_R1': settings.default_value,
-                'Time_toFirst_Fix_R2': settings.default_value, 
+                'Time_toFirst_Fix_R2': settings.default_value,
                 'Time_toFirst_Fix_I1': settings.default_value,
-                'Time_toFirst_Fix_I2': settings.default_value, 
+                'Time_toFirst_Fix_I2': settings.default_value,
                 'Time_toFirst_Fix_Q': settings.default_value,
                 'Time_toFirst_Fix_N': settings.default_value,
                 'VisualSearch_R' : settings.default_value,
@@ -300,7 +300,7 @@ def summary_gaze_data(rows):
         trial_to_data[trial]['TotalFixTime'] += duration
         key = 'TotalFixTime_' + aoi
         trial_to_data[trial][key] += duration
-        
+
         key = 'Time_toFirst_Fix_'+ aoi
         if key not in trial_to_default_vals[trial]:
             trial_to_default_vals[trial][key] = True
@@ -346,14 +346,14 @@ def get_last_I(aois_times):
     time_last_I = settings.default_value
 
     index = -1
-    
+
     for aoi, time in aois_times:
         index += 1
 
         if aoi[0] == 'I':
             search_last_I = index
             time_last_I = time
-        
+
     return search_last_I, time_last_I
 
 def get_last_Itrans(aois_times):
@@ -383,32 +383,3 @@ def get_last_Itrans(aois_times):
                 break
 
     return search_last_Itrans, time_last_Itrans
-
-def get_I_fixs(aois_times):
-    visual_search = settings.default_value
-    search_time = settings.default_value
-
-    start = -1
-    index = -1
-    match_count = 0
-    I_count = 0
-    for aoi, time in aois_times:
-        index += 1
-
-        if aoi == 'N' or aoi == 'Q':
-            continue
-        elif aoi[0] != 'R':
-            match_count = 0
-            start = -1
-        else:
-            match_count += 1
-            if start == -1:
-                start = index
-                #time_start = time
-
-            if match_count == 3:
-                visual_search = start
-                search_time = time
-                break
-
-    return visual_search, search_time
