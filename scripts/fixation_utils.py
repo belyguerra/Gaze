@@ -125,7 +125,7 @@ def identify_fixations(rows):
 
 
             counter += 1
-            fixs += [counter] * (len(xwindow)-1)
+            fixs += [counter]  * (len(xwindow)-1)
             x = x[len(xwindow)-1:]
             y = y[len(ywindow)-1:]
             t = t[len(twindow)-1:]
