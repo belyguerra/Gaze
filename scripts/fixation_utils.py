@@ -82,7 +82,7 @@ def identify_fixations(rows):
             while undo_end_fixation:
                 while (
 <<<<<<< HEAD
-                    abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX 
+                    abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
 =======
                     abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
 >>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
@@ -109,18 +109,15 @@ def identify_fixations(rows):
                     plus_n_twindow = twindow + [t[i+n]]
                     plus_n_prev_time = plus_n_twindow[i + n - 1]
 
-                    if (
-<<<<<<< HEAD
-                        abs(float(max(plus_n_xwindow)) - float(min(plus_n_xwindow))) <= DIST_PIX 
+                    if (abs(float(max(plus_n_xwindow)) - float(min(plus_n_xwindow))) <= DIST_PIX
                         and abs(float(max(plus_n_ywindow)) - float(min(plus_n_ywindow))) <= DIST_PIX
                         and plus_n_twindow[i+n] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
-=======
+
                         abs(float(max(plus_n_xwindow)) - float(min(plus_n_xwindow))) <= DIST_PIX
                         and abs(float(max(plus_n_ywindow)) - float(min(plus_n_ywindow))) <= DIST_PIX
                         #and plus_n_twindow[i + n] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
-                        and plus_n_twindow - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
->>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
-                    ):
+                        and plus_n_twindow - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION):
+
                         undo_end_fixation = True
                         break
 
