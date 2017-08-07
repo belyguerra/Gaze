@@ -80,16 +80,12 @@ def identify_fixations(rows):
             prev_time = twindow[i-2]
             undo_end_fixation = True
             while undo_end_fixation:
-                while (
-<<<<<<< HEAD
-                    abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
-=======
-                    abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
->>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
-                    and abs(float(max(ywindow)) - float(min(ywindow))) <= DIST_PIX
-                    and twindow[i-1] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
-                    and i < len(x)
-                ):
+                while (abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
+                        abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
+                        and abs(float(max(ywindow)) - float(min(ywindow))) <= DIST_PIX
+                        and twindow[i-1] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
+                        and i < len(x)
+                    ):
                     xwindow.append(x[i])
                     ywindow.append(y[i])
                     twindow.append(t[i])
@@ -390,8 +386,4 @@ def get_last_Itrans(aois_times):
                 time_last_Itrans = time
                 break
 
-<<<<<<< HEAD
-    return search_last_Itrans, time_last_Itrans
-=======
-    return search_last_Itrans, time_last_Itrans
->>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
+        return search_last_Itrans, time_last_Itrans
