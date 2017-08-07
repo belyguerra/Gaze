@@ -62,11 +62,13 @@ def identify_fixations(rows):
     MIN_PTS_IN_WINDOW = 6
     MIN_MS_WINDOW = 100
     DIST_PIX = 35
+    MAX_OUTLIER_PTS = 1
     x = [float(row['Gaze(x)']) for row in rows]
     y = [float(row['Gaze(y)']) for row in rows]
     t = [int(row['Time']) for row in rows]
     while len(x) > 0:
         xwindow, ywindow, twindow = get_next_window(x, y, t)
+        num_points_skipped = 0
         if (
             len(xwindow) >= MIN_PTS_IN_WINDOW
             and twindow[-1] - twindow[0] >= MIN_MS_WINDOW
@@ -76,17 +78,51 @@ def identify_fixations(rows):
             i = len(xwindow)
             # length of window will always be > 1
             prev_time = twindow[i-2]
-            while (
-                abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX 
-                and abs(float(max(ywindow)) - float(min(ywindow))) <= DIST_PIX
-                and twindow[i-1] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
-                and i < len(x)
-            ):
-                xwindow.append(x[i])
-                ywindow.append(y[i])
-                twindow.append(t[i])
-                prev_time = twindow[i-1]
-                i += 1
+            undo_end_fixation = True
+            while undo_end_fixation:
+                while (
+                    abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX 
+                    and abs(float(max(ywindow)) - float(min(ywindow))) <= DIST_PIX
+                    and twindow[i-1] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
+                    and i < len(x)
+                ):
+                    xwindow.append(x[i])
+                    ywindow.append(y[i])
+                    twindow.append(t[i])
+                    prev_time = twindow[i-1]
+                    i += 1
+
+                # check if next point is in fixation
+                n = 1
+                undo_end_fixation = False
+                while (
+                    n <= MAX_OUTLIER_PTS
+                    and i + n < len(x)
+                    and not undo_end_fixation
+                ):
+                    plus_n_xwindow = xwindow + [x[i+n]]
+                    plus_n_ywindow = ywindow + [y[i+n]]
+                    plus_n_twindow = twindow + [t[i+n]]
+                    plus_n_prev_time = plus_n_twindow[i + n - 1]
+
+                    if (
+                        abs(float(max(plus_n_xwindow)) - float(min(plus_n_xwindow))) <= DIST_PIX 
+                        and abs(float(max(plus_n_ywindow)) - float(min(plus_n_ywindow))) <= DIST_PIX
+                        and plus_n_twindow[i+n] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
+                    ):
+                        undo_end_fixation = True
+                        break
+
+                    n += 1
+
+                if undo_end_fixation:
+                    xwindow = plus_n_xwindow
+                    ywindow = plus_n_ywindow
+                    twindow = plus_n_twindow
+                    i += n
+                    prev_time = twindow[-2]
+
+
             counter += 1
             fixs += [counter] * (len(xwindow)-1)
             x = x[len(xwindow)-1:]
@@ -273,7 +309,7 @@ def summary_gaze_data(rows):
     for trial, aois_times in trial_to_aois.iteritems():
         trial_to_data[trial]['VisualSearch_R'],trial_to_data[trial]['SearchTime_R']  = get_visual_search(aois_times)
         trial_to_data[trial]['VisualSearch_I'],trial_to_data[trial]['SearchTime_I']  = get_last_I(aois_times)
-        trial_to_data[trial]['VisualSearch_Itrans'],trial_to_data[trial]['SearchTime_Itrans']  = get_last_Itrans(aois_times)
+        trial_to_data[trial]['VisualSearch_I_trans'],trial_to_data[trial]['SearchTime_I_trans']  = get_last_Itrans(aois_times)
 
     return trial_to_data
 
@@ -347,32 +383,3 @@ def get_last_Itrans(aois_times):
                 break
 
     return search_last_Itrans, time_last_Itrans
-
-def get_I_fixs(aois_times):
-    visual_search = settings.default_value
-    search_time = settings.default_value
-
-    start = -1
-    index = -1
-    match_count = 0
-    I_count = 0
-    for aoi, time in aois_times:
-        index += 1
-
-        if aoi == 'N' or aoi == 'Q':
-            continue
-        elif aoi[0] != 'R':
-            match_count = 0
-            start = -1
-        else:
-            match_count += 1
-            if start == -1:
-                start = index
-                #time_start = time
-
-            if match_count == 3:
-                visual_search = start
-                search_time = time
-                break
-
-    return visual_search, search_time

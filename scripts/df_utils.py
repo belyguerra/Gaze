@@ -23,11 +23,11 @@ def get_files(subjid, block):
         if 'behav' in txtfile:
             behavfile = txtfile
 
-    print "data for block: %s" %block
-    print gazefile
-    print blinkfile
-    print pupilfile
-    print behavfile
+    print("data for block: %s" %block)
+    print(gazefile)
+    print(blinkfile)
+    print(pupilfile)
+    print(behavfile)
 
     return [gazefile, blinkfile, pupilfile, behavfile]
 

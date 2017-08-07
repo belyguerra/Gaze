@@ -16,8 +16,8 @@ def main():
     dic_pic_B = df_utils.get_trial_dic(settings.filepath_dic_pic_B)
 
     default_row = {}
-    for subjid in range(200,297):
-        print '\n processing subject %d' %subjid
+    for subjid in range(100,197):
+        print('\n processing subject %d' %subjid)
         try:
             for block in ['A', 'B']:
                 
@@ -29,7 +29,7 @@ def main():
                 #process ocular data 
                 gaze = df_utils.read_tsv(files[0], settings.gazecols)
                 #blink = df_utils.read_tsv(files[1], settings.blinkcols)
-                print 'read %d rows' % len(gaze)
+                print('read %d rows' % len(gaze))
                 #print 'read %d rows' % len(blink)
                 #we need to interpolate the blinks...
                 #combined_data_dic = {}
@@ -67,7 +67,7 @@ def main():
 
                 #process behavioral data and summary gaze file
                 behav = df_utils.read_tsv(files[3], settings.behavcols)
-                print 'read %d rows' % len(behav)
+                print('read %d rows' % len(behav))
                 
                 for row in behav:
                     row['Trial'] = int(row['Trial'])
@@ -86,7 +86,7 @@ def main():
                     summary_data['RT'] = float(row['RT'])
 
                     if trial not in summary_gaze_data:
-                        print 'Warning: missing fix/trans data for trial %d!' % trial
+                        print( 'Warning: missing fix/trans data for trial %d!' % trial)
                         for key in settings.gaze_headers:
                             summary_data[key] = settings.default_value
 
@@ -128,15 +128,15 @@ def main():
 
         except Exception as e:
             failed.append((subjid,block))
-            print 'Failed for subject ' + str(subjid) + '_' + block
+            print( 'Failed for subject ' + str(subjid) + '_' + block)
             raise
 
     #output the fixation data for the grid plot
-    output_fixationfile = os.path.join(settings.output_agg_dir, 'LSAT_TI_fixations_test.tsv')
+    output_fixationfile = os.path.join(settings.output_agg_dir, 'LSAT_TI_fixations.tsv')
     df_utils.output_rows(output_fixationfile, fixation_rows)
 
     # print the summary file
-    output_summaryfile = os.path.join(settings.output_agg_dir, 'LSAT_TI_summary_gaze_test.tsv')
+    output_summaryfile = os.path.join(settings.output_agg_dir, 'LSAT_TI_summary_gaze.tsv')
     df_utils.output_rows(output_summaryfile, summary_rows)
 
 

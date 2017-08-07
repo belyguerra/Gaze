@@ -10,7 +10,7 @@ gazecols = trialcols + ['Gaze(x)', 'Gaze(y)'] + timecols
 
 pupilcols = trialcols + ['Pupil(x)', 'Pupil(y)'] + timecols + ['empty']
 blinkcols = trialcols + ['Gaze(x)', 'Gaze(y)'] + timecols
-print blinkcols
+print(blinkcols)
 behavcols = ['Trial', 'Infer', 'CorrectAnswer', 'SubjectResponse', 'ProbRel', 'RT', 'RT_Unc']
 
 #headers for the file that is used for plotting the grid with fixation patterns.
@@ -37,15 +37,15 @@ root_dir = '/home/bunge/bguerra/EyeTracking'
 #rawfiles_dir = os.path.join(root_dir, 'Raw_Data/Transinf_data/LSAT_T1') if isTime1==True else os.path.join(root_dir, 'Raw_Data/Transinf_data/LSAT_T2')
 
 
-rawfiles_dir = os.path.join(root_dir, 'Raw_Data/Transinf_data/LSAT_T2')
+rawfiles_dir = os.path.join(root_dir, 'Raw_Data/Transinf_data/LSAT_T1')
 
 # output directory for processed data
 #output_gaze_processed_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/preprocessed/T1') if isTime1==True else os.path.join(root_dir, 'gaze_analysis/data/transif/preprocessed/T2')
 #output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/results/T1') if isTime1==True else os.path.join(root_dir, 'gaze_analysis/data/transif/results/T2')
 
-output_gaze_processed_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/preprocessed/T2')
+output_gaze_processed_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/preprocessed/T1')
 
-output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/results/T2')
+output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/results/T1')
 
 #for testing locally
 #isTime1 = True
