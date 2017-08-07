@@ -24,7 +24,7 @@ gaze_headers = ['TotalFixations', 'TotalFixations_N', 'TotalFixation_R', 'TotalF
     'TotalTransitions', 'Q-R', 'Q-I', 'R-R', 'R-I', 'I-I']
 
 summary_headers = ['PID', 'Block', 'Trial', 'Condition', 'ACC', 'RT']+gaze_headers
-    
+
 
 ###################################################################################
 
@@ -75,7 +75,7 @@ AOI_pos = [[-250,250,-200,-450], [-575,-325,25,375], [-275,-25,25,375], [25,275,
 AOIs = {
 
     'IneqEq0': [
-        AOI_pos[0] + ['Q'], 
+        AOI_pos[0] + ['Q'],
         AOI_pos[2] + ['R1'],
         AOI_pos[3] + ['R2'],
         AOI_pos[1] + ['I1'],

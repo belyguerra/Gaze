@@ -20,13 +20,13 @@ def main():
         print('\n processing subject %d' %subjid)
         try:
             for block in ['A', 'B']:
-                
+
                 files = df_utils.get_files(subjid, block)
                 #if no gaze file continue
                 if not files[0]:
                     continue
 
-                #process ocular data 
+                #process ocular data
                 gaze = df_utils.read_tsv(files[0], settings.gazecols)
                 #blink = df_utils.read_tsv(files[1], settings.blinkcols)
                 print('read %d rows' % len(gaze))
@@ -38,24 +38,24 @@ def main():
                 #combined_rows = combined_data_dic.values()
                 #combined_rows.sort(key=lambda r: (int(r['Trial']), int(r['Time'])))
                 #print 'read %d rows' % len(combined_rows)
-                
+
                 for row in gaze:
                     df_utils.trial_reindex(row)
-                    
+
                     df_utils.subject_block(subjid,block,row)
 
                     trial_dic = dic_cond_A if block == 'A' else dic_cond_B
                     df_utils.map_conditions('Condition', row, trial_dic)
-                    
+
                     trial_dic = dic_pic_A if block == 'A' else dic_pic_B
                     df_utils.map_conditions('Image_file', row, trial_dic)
-                    
+
                     fixation_utils.ogama_coordiates(row)
                     df_utils.ogama_subject(subjid, block, row)
-                    
+
                     fixation_utils.add_aoi(row)
-                
-                fixation_utils.identify_fixations(gaze)    
+
+                fixation_utils.identify_fixations(gaze)
                 output_gazefile = os.path.join(settings.output_gaze_processed_dir, str(subjid)+ '_' +block+'_processed_gaze.tsv')
                 df_utils.output_rows(output_gazefile, gaze)
 
@@ -68,7 +68,11 @@ def main():
                 #process behavioral data and summary gaze file
                 behav = df_utils.read_tsv(files[3], settings.behavcols)
                 print('read %d rows' % len(behav))
+<<<<<<< HEAD
                 
+=======
+
+>>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
                 for row in behav:
                     row['Trial'] = int(row['Trial'])
                     trial = row['Trial']
@@ -86,7 +90,11 @@ def main():
                     summary_data['RT'] = float(row['RT'])
 
                     if trial not in summary_gaze_data:
+<<<<<<< HEAD
                         print( 'Warning: missing fix/trans data for trial %d!' % trial)
+=======
+                        print('Warning: missing fix/trans data for trial %d!' % trial)
+>>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
                         for key in settings.gaze_headers:
                             summary_data[key] = settings.default_value
 
@@ -101,17 +109,17 @@ def main():
                         summary_data['TotalFixTime_R'] = df_utils.combine_vals(summary_data['TotalFixTime_R1'], summary_data['TotalFixTime_R2'])
                         summary_data['TotalFixTime_I'] = df_utils.combine_vals(summary_data['TotalFixTime_I1'], summary_data['TotalFixTime_I2'])
                         summary_data['Time_toFirst_Fix_R'] = df_utils.min_vals(summary_data['Time_toFirst_Fix_R1'], 'Time_toFirst_Fix_R2')
-                        summary_data['Time_toFirst_Fix_I'] = df_utils.min_vals(summary_data['Time_toFirst_Fix_I1'], 'Time_toFirst_Fix_I2')    
+                        summary_data['Time_toFirst_Fix_I'] = df_utils.min_vals(summary_data['Time_toFirst_Fix_I1'], 'Time_toFirst_Fix_I2')
 
                     if trial in transition_data:
                         for key, val in transition_data[trial].iteritems():
                             summary_data[key] = val
 
                         summary_data['Q-R'] = df_utils.combine_vals(summary_data['Q-R1'], summary_data['R1-Q'])
-                        summary_data['Q-R'] += df_utils.combine_vals(summary_data['Q-R2'], summary_data['R2-Q']) 
+                        summary_data['Q-R'] += df_utils.combine_vals(summary_data['Q-R2'], summary_data['R2-Q'])
                         summary_data['Q-I'] = df_utils.combine_vals(summary_data['Q-I1'], summary_data['I1-Q'])
-                        summary_data['Q-I'] += df_utils.combine_vals(summary_data['Q-I2'], summary_data['I2-Q']) 
-                        summary_data['R-R'] = df_utils.combine_vals(summary_data['R1-R2'], summary_data['R2-R1']) 
+                        summary_data['Q-I'] += df_utils.combine_vals(summary_data['Q-I2'], summary_data['I2-Q'])
+                        summary_data['R-R'] = df_utils.combine_vals(summary_data['R1-R2'], summary_data['R2-R1'])
                         summary_data['R-R'] += df_utils.combine_vals(summary_data['R1-R1'], summary_data['R2-R2'])
                         summary_data['R-I'] = df_utils.combine_vals(summary_data['R1-I1'], summary_data['I1-R1'])
                         summary_data['R-I'] += df_utils.combine_vals(summary_data['R1-I2'], summary_data['R1-I2'])
@@ -121,14 +129,18 @@ def main():
                         summary_data['I-I'] += df_utils.combine_vals(summary_data['I1-I1'], summary_data['I2-I2'])
 
                     summary_rows.append(summary_data)
-                    
+
                     # hack for default values
                     if len(default_row) == 0:
-                        default_row = summary_data                         
+                        default_row = summary_data
 
         except Exception as e:
             failed.append((subjid,block))
+<<<<<<< HEAD
             print( 'Failed for subject ' + str(subjid) + '_' + block)
+=======
+            print('Failed for subject ' + str(subjid) + '_' + block)
+>>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
             raise
 
     #output the fixation data for the grid plot
@@ -150,7 +162,7 @@ def get_default_summary_row(prototype):
 #if __name__ == '__main__':
 #    if len(sys.argv)!=2:
 #        print 'you forgot to specify the time (1 or 2)'
-#        sys.exit(-1) 
+#        sys.exit(-1)
 #    main(sys.argv[1])
 
 if __name__ == '__main__':

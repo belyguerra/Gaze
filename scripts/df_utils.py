@@ -24,10 +24,17 @@ def get_files(subjid, block):
             behavfile = txtfile
 
     print("data for block: %s" %block)
+<<<<<<< HEAD
     print(gazefile)
     print(blinkfile)
     print(pupilfile)
     print(behavfile)
+=======
+    print( gazefile)
+    print( blinkfile)
+    print( pupilfile)
+    print( behavfile)
+>>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
 
     return [gazefile, blinkfile, pupilfile, behavfile]
 
@@ -88,7 +95,7 @@ def get_trial_dic(filename):
 # maps the condition to the trial key
 def map_conditions(new_column, row_data, trial_dic):
     if row_data['Trial'] not in trial_dic:
-        raise Exception('trial not found %s' % row_data['Trial']) 
+        raise Exception('trial not found %s' % row_data['Trial'])
 
     row_data[new_column] = trial_dic[row_data['Trial']]
 
@@ -124,16 +131,16 @@ def min_vals(val1, val2):
 
     return min(val1, val2)
 
-# write out function to 
+# write out function to
 def output_rows(filepath, rows):
     if len(rows) == 0:
         raise Exception('Nothing to write!')
-        
+
     with open(filepath, 'w') as f:
         headers = list(rows[0].keys())
         f.write('\t'.join(headers))
         f.write('\n')
-        
+
         for row in rows:
             values = [str(row[header]) for header in headers]
             line = '\t'.join(values)
