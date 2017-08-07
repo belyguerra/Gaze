@@ -80,7 +80,8 @@ def identify_fixations(rows):
             prev_time = twindow[i-2]
             undo_end_fixation = True
             while undo_end_fixation:
-                while (abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
+                while (
+                        abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
                         abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
                         and abs(float(max(ywindow)) - float(min(ywindow))) <= DIST_PIX
                         and twindow[i-1] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
