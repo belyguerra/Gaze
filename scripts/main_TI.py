@@ -68,11 +68,7 @@ def main():
                 #process behavioral data and summary gaze file
                 behav = df_utils.read_tsv(files[3], settings.behavcols)
                 print('read %d rows' % len(behav))
-<<<<<<< HEAD
-                
-=======
 
->>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
                 for row in behav:
                     row['Trial'] = int(row['Trial'])
                     trial = row['Trial']
@@ -90,11 +86,7 @@ def main():
                     summary_data['RT'] = float(row['RT'])
 
                     if trial not in summary_gaze_data:
-<<<<<<< HEAD
-                        print( 'Warning: missing fix/trans data for trial %d!' % trial)
-=======
                         print('Warning: missing fix/trans data for trial %d!' % trial)
->>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
                         for key in settings.gaze_headers:
                             summary_data[key] = settings.default_value
 
@@ -136,11 +128,11 @@ def main():
 
         except Exception as e:
             failed.append((subjid,block))
-<<<<<<< HEAD
+
             print( 'Failed for subject ' + str(subjid) + '_' + block)
-=======
+
             print('Failed for subject ' + str(subjid) + '_' + block)
->>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
+
             raise
 
     #output the fixation data for the grid plot
