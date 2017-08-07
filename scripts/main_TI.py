@@ -130,9 +130,6 @@ def main():
             failed.append((subjid,block))
 
             print( 'Failed for subject ' + str(subjid) + '_' + block)
-
-            print('Failed for subject ' + str(subjid) + '_' + block)
-
             raise
 
     #output the fixation data for the grid plot

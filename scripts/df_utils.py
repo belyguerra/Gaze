@@ -24,17 +24,11 @@ def get_files(subjid, block):
             behavfile = txtfile
 
     print("data for block: %s" %block)
-<<<<<<< HEAD
+
     print(gazefile)
     print(blinkfile)
     print(pupilfile)
     print(behavfile)
-=======
-    print( gazefile)
-    print( blinkfile)
-    print( pupilfile)
-    print( behavfile)
->>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
 
     return [gazefile, blinkfile, pupilfile, behavfile]
 
