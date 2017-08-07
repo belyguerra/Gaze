@@ -110,11 +110,7 @@ def identify_fixations(rows):
                         and abs(float(max(plus_n_ywindow)) - float(min(plus_n_ywindow))) <= DIST_PIX
                         and plus_n_twindow[i + n] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
                     ):
-
-                        undo_end_fixation = True
-                        break
-
-                    n += 1
+                        n += 1
 
                 if undo_end_fixation:
                     xwindow = plus_n_xwindow
