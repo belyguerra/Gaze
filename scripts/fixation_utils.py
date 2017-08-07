@@ -81,7 +81,11 @@ def identify_fixations(rows):
             undo_end_fixation = True
             while undo_end_fixation:
                 while (
+<<<<<<< HEAD
+                    abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX 
+=======
                     abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
+>>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
                     and abs(float(max(ywindow)) - float(min(ywindow))) <= DIST_PIX
                     and twindow[i-1] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
                     and i < len(x)
@@ -106,10 +110,16 @@ def identify_fixations(rows):
                     plus_n_prev_time = plus_n_twindow[i + n - 1]
 
                     if (
+<<<<<<< HEAD
+                        abs(float(max(plus_n_xwindow)) - float(min(plus_n_xwindow))) <= DIST_PIX 
+                        and abs(float(max(plus_n_ywindow)) - float(min(plus_n_ywindow))) <= DIST_PIX
+                        and plus_n_twindow[i+n] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
+=======
                         abs(float(max(plus_n_xwindow)) - float(min(plus_n_xwindow))) <= DIST_PIX
                         and abs(float(max(plus_n_ywindow)) - float(min(plus_n_ywindow))) <= DIST_PIX
                         #and plus_n_twindow[i + n] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
                         and plus_n_twindow - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
+>>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
                     ):
                         undo_end_fixation = True
                         break
@@ -310,7 +320,7 @@ def summary_gaze_data(rows):
     for trial, aois_times in trial_to_aois.iteritems():
         trial_to_data[trial]['VisualSearch_R'],trial_to_data[trial]['SearchTime_R']  = get_visual_search(aois_times)
         trial_to_data[trial]['VisualSearch_I'],trial_to_data[trial]['SearchTime_I']  = get_last_I(aois_times)
-        trial_to_data[trial]['VisualSearch_Itrans'],trial_to_data[trial]['SearchTime_Itrans']  = get_last_Itrans(aois_times)
+        trial_to_data[trial]['VisualSearch_I_trans'],trial_to_data[trial]['SearchTime_I_trans']  = get_last_Itrans(aois_times)
 
     return trial_to_data
 
@@ -383,4 +393,8 @@ def get_last_Itrans(aois_times):
                 time_last_Itrans = time
                 break
 
+<<<<<<< HEAD
     return search_last_Itrans, time_last_Itrans
+=======
+    return search_last_Itrans, time_last_Itrans
+>>>>>>> 950f27f92850dcda76b8cc2eeca1f09e7a57c07c
