@@ -75,68 +75,73 @@ def identify_fixations(rows):
         num_points_skipped = 0
         if (
             len(xwindow) >= MIN_PTS_IN_WINDOW
-            and twindow[-1] - twindow[0] >= MIN_MS_WINDOW
             and abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
             and abs(float(max(ywindow)) - float(min(ywindow))) <= DIST_PIX
+            and twindow[-1] - twindow[0] >= MIN_MS_WINDOW
         ):
             i = len(xwindow)
-            # length of window will always be > 1
-            prev_time = twindow[i-2]
             undo_end_fixation = True
             while undo_end_fixation:
-                while (
-                    abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
-                    and abs(float(max(ywindow)) - float(min(ywindow))) <= DIST_PIX
-                    and twindow[i-1] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
-                    and i < len(x)
-                    and trials[i-1] == current_trial
-                ):
+                while i < len(x):
+                    if abs(float(max(xwindow + [x[i]])) - float(min(xwindow + [x[i]]))) > DIST_PIX:
+                        break
+                    elif abs(float(max(ywindow + [y[i]])) - float(min(ywindow + [y[i]]))) > DIST_PIX:
+                        break
+                    if t[i] - t[i-1] > MAX_MS_BETWEEN_PTS_IN_FIXATION:
+                        break
+                    if trials[i] != current_trial:
+                        break
+
                     xwindow.append(x[i])
                     ywindow.append(y[i])
                     twindow.append(t[i])
-                    prev_time = twindow[i-1]
                     i += 1
 
-                # check if next point is in fixation
-                n = 0
                 undo_end_fixation = False
-                plus_n_xwindow = xwindow
-                plus_n_ywindow = ywindow
-                plus_n_twindow = twindow
-                while (
-                    n <= MAX_OUTLIER_PTS
-                    and i + n < len(x)
-                    and not undo_end_fixation
-                ):
-                    plus_n_xwindow += [x[i+n]]
-                    plus_n_ywindow += [y[i+n]]
-                    plus_n_twindow += [t[i+n]]
+                # if trial changed, don't undo end fixation
+                if trials[i] != current_trial:
+                    break
+                # if next point is too far in future, don't undo end fixation
+                if t[i] - t[i-1] > MAX_MS_BETWEEN_PTS_IN_FIXATION:
+                    break
 
+                # add point i to window
+                plus_n_xwindow = xwindow + [x[i]]
+                plus_n_ywindow = ywindow + [y[i]]
+                plus_n_twindow = twindow + [t[i]]
+                i += 1
+                n = 0
+                while i + n < len(x):
+                    if n >= MAX_OUTLIER_PTS:
+                        break
+                    if t[i + n] - t[i + n - 1] > MAX_MS_BETWEEN_PTS_IN_FIXATION:
+                        break
+                    if trials[i + n] != current_trial:
+                        break
                     if (
-                        abs(float(max(plus_n_xwindow)) - float(min(plus_n_xwindow))) <= DIST_PIX
-                        and abs(float(max(plus_n_ywindow)) - float(min(plus_n_ywindow))) <= DIST_PIX
-                        and plus_n_twindow[-1] - plus_n_twindow[-2] <= MAX_MS_BETWEEN_PTS_IN_FIXATION
-                        and trials[i+n] == current_trial
+                        abs(float(max(plus_n_xwindow + [x[n+i]])) - float(min(plus_n_xwindow + [x[n+i]]))) <= DIST_PIX
+                        and abs(float(max(plus_n_ywindow + [y[n+i]])) - float(min(plus_y_window + [y[n+i]]))) <= DIST_PIX
                     ):
                         undo_end_fixation = True
                         break
-
+                    else:
+                        plus_n_xwindow += [x[n+i]]
+                        plus_n_ywindow += [y[n+i]]
+                        plus_n_twindow += [t[n+i]]
                     n += 1
 
                 if undo_end_fixation:
                     xwindow = plus_n_xwindow
                     ywindow = plus_n_ywindow
                     twindow = plus_n_twindow
-                    i += n
-                    prev_time = twindow[-2]
-
+                    i += n + 1
 
             counter += 1
-            fixs += [counter] * (len(xwindow)-1)
-            x = x[len(xwindow)-1:]
-            y = y[len(ywindow)-1:]
-            t = t[len(twindow)-1:]
-            trials = trials[len(twindow)-1:]
+            fixs += [counter] * len(xwindow)
+            x = x[len(xwindow):]
+            y = y[len(ywindow):]
+            t = t[len(twindow):]
+            trials = trials[len(twindow):]
         else:
             x = x[1:]
             y = y[1:]
