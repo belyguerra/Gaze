@@ -30,10 +30,11 @@ def add_aoi(row):
             row['AOI'] = aoi_data[4]
             return
 
-def get_next_window(x, y, t):
+def get_next_window(x, y, t, trials):
     xwindow = x[0:1]
     ywindow = y[0:1]
     twindow = t[0:1]
+    current_trial = trials[0]
 
     MAX_TIME_IN_WINDOW = 150
     index = 1
@@ -43,6 +44,7 @@ def get_next_window(x, y, t):
         #len(xwindow) < max_pts_in_window
         index < len(x)
         and t[index] - start_time <= MAX_TIME_IN_WINDOW
+        and trials[index] != current_trial
     ):
         xwindow.append(x[index])
         ywindow.append(y[index])
@@ -66,8 +68,10 @@ def identify_fixations(rows):
     x = [float(row['Gaze(x)']) for row in rows]
     y = [float(row['Gaze(y)']) for row in rows]
     t = [int(row['Time']) for row in rows]
+    trials = [row['Trial'] for row in rows]
     while len(x) > 0:
-        xwindow, ywindow, twindow = get_next_window(x, y, t)
+        xwindow, ywindow, twindow = get_next_window(x, y, t, trials)
+        current_trial = trials[0]
         num_points_skipped = 0
         if (
             len(xwindow) >= MIN_PTS_IN_WINDOW
@@ -85,6 +89,7 @@ def identify_fixations(rows):
                     and abs(float(max(ywindow)) - float(min(ywindow))) <= DIST_PIX
                     and twindow[i-1] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
                     and i < len(x)
+                    and x[i-1]['Trial'] == current_trial
                 ):
                     xwindow.append(x[i])
                     ywindow.append(y[i])
@@ -111,6 +116,7 @@ def identify_fixations(rows):
                         abs(float(max(plus_n_xwindow)) - float(min(plus_n_xwindow))) <= DIST_PIX
                         and abs(float(max(plus_n_ywindow)) - float(min(plus_n_ywindow))) <= DIST_PIX
                         and plus_n_twindow[-1] - plus_n_twindow[-2] <= MAX_MS_BETWEEN_PTS_IN_FIXATION
+                        and plus_n_xwindow[-1]['Trial'] == current_trial
                     ):
                         undo_end_fixation = True
                         break
@@ -130,10 +136,12 @@ def identify_fixations(rows):
             x = x[len(xwindow)-1:]
             y = y[len(ywindow)-1:]
             t = t[len(twindow)-1:]
+            trials = trials[len(twindow)-1:]
         else:
             x = x[1:]
             y = y[1:]
             t = t[1:]
+            trials = trials[1:]
             fixs += [-1]
 
     if len(fixs) != len(rows):
