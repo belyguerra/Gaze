@@ -108,9 +108,12 @@ def identify_fixations(rows):
                     if (
                         abs(float(max(plus_n_xwindow)) - float(min(plus_n_xwindow))) <= DIST_PIX
                         and abs(float(max(plus_n_ywindow)) - float(min(plus_n_ywindow))) <= DIST_PIX
-                        and plus_n_twindow[i + n] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
+                        and plus_n_twindow[i+n] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
                     ):
-                        n += 1
+                        undo_end_fixation = True
+                        break
+
+                    n += 1
 
                 if undo_end_fixation:
                     xwindow = plus_n_xwindow
@@ -121,7 +124,7 @@ def identify_fixations(rows):
 
 
             counter += 1
-            fixs += [counter]  * (len(xwindow)-1)
+            fixs += [counter] * (len(xwindow)-1)
             x = x[len(xwindow)-1:]
             y = y[len(ywindow)-1:]
             t = t[len(twindow)-1:]
@@ -135,7 +138,6 @@ def identify_fixations(rows):
         raise Exception('number of fixations is not the same as number of rows')
     for i, row in enumerate(rows):
         row['Fixation'] = fixs[i]
-
 
 # trial -> transition_cnt_dictionary
 def get_transitions(rows):
