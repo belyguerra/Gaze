@@ -98,6 +98,9 @@ def identify_fixations(rows):
                     i += 1
 
                 undo_end_fixation = False
+                # if reached the end, don't undo end fixation
+                if i >= len(x):
+                    break
                 # if trial changed, don't undo end fixation
                 if trials[i] != current_trial:
                     break
