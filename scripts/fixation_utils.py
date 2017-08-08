@@ -95,14 +95,17 @@ def identify_fixations(rows):
                 # check if next point is in fixation
                 n = 1
                 undo_end_fixation = False
+                plus_n_xwindow = xwindow
+                plus_n_ywindow = ywindow
+                plus_n_twindow = twindow
                 while (
                     n <= MAX_OUTLIER_PTS
                     and i + n < len(x)
                     and not undo_end_fixation
                 ):
-                    plus_n_xwindow = xwindow + [x[i+n]]
-                    plus_n_ywindow = ywindow + [y[i+n]]
-                    plus_n_twindow = twindow + [t[i+n]]
+                    plus_n_xwindow += [x[i+n]]
+                    plus_n_ywindow += [y[i+n]]
+                    plus_n_twindow += [t[i+n]]
                     plus_n_prev_time = plus_n_twindow[i + n - 1]
 
                     if (
