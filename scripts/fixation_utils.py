@@ -89,7 +89,7 @@ def identify_fixations(rows):
                     and abs(float(max(ywindow)) - float(min(ywindow))) <= DIST_PIX
                     and twindow[i-1] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
                     and i < len(x)
-                    and x[i-1]['Trial'] == current_trial
+                    and trials[i-1] == current_trial
                 ):
                     xwindow.append(x[i])
                     ywindow.append(y[i])
@@ -98,7 +98,7 @@ def identify_fixations(rows):
                     i += 1
 
                 # check if next point is in fixation
-                n = 1
+                n = 0
                 undo_end_fixation = False
                 plus_n_xwindow = xwindow
                 plus_n_ywindow = ywindow
@@ -116,7 +116,7 @@ def identify_fixations(rows):
                         abs(float(max(plus_n_xwindow)) - float(min(plus_n_xwindow))) <= DIST_PIX
                         and abs(float(max(plus_n_ywindow)) - float(min(plus_n_ywindow))) <= DIST_PIX
                         and plus_n_twindow[-1] - plus_n_twindow[-2] <= MAX_MS_BETWEEN_PTS_IN_FIXATION
-                        and plus_n_xwindow[-1]['Trial'] == current_trial
+                        and trials[i+n] == current_trial
                     ):
                         undo_end_fixation = True
                         break
