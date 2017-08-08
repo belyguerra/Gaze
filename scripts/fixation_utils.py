@@ -40,7 +40,7 @@ def get_next_window(x, y, t):
     start_time = twindow[0]
     while (
         # if want to enforce max num of pts in window
-        len(xwindow) < max_pts_in_window
+        #len(xwindow) < max_pts_in_window
         index < len(x)
         and t[index] - start_time <= MAX_TIME_IN_WINDOW
     ):
@@ -108,7 +108,7 @@ def identify_fixations(rows):
                     if (
                         abs(float(max(plus_n_xwindow)) - float(min(plus_n_xwindow))) <= DIST_PIX
                         and abs(float(max(plus_n_ywindow)) - float(min(plus_n_ywindow))) <= DIST_PIX
-                        and plus_n_twindow[i+n] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
+                        and plus_n_pre_time[i+n] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
                     ):
                         undo_end_fixation = True
                         break
