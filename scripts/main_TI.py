@@ -100,8 +100,8 @@ def main():
                         summary_data['TotalFixations_I'] = df_utils.combine_vals(summary_data['TotalFixations_I1'], summary_data['TotalFixations_I2'])
                         summary_data['TotalFixTime_R'] = df_utils.combine_vals(summary_data['TotalFixTime_R1'], summary_data['TotalFixTime_R2'])
                         summary_data['TotalFixTime_I'] = df_utils.combine_vals(summary_data['TotalFixTime_I1'], summary_data['TotalFixTime_I2'])
-                        summary_data['Time_toFirst_Fix_R'] = df_utils.min_vals(summary_data['Time_toFirst_Fix_R1'], 'Time_toFirst_Fix_R2')
-                        summary_data['Time_toFirst_Fix_I'] = df_utils.min_vals(summary_data['Time_toFirst_Fix_I1'], 'Time_toFirst_Fix_I2')
+                        summary_data['Time_toFirst_Fix_R'] = df_utils.min_vals(summary_data['Time_toFirst_Fix_R1'], summary_data['Time_toFirst_Fix_R2'])
+                        summary_data['Time_toFirst_Fix_I'] = df_utils.min_vals(summary_data['Time_toFirst_Fix_I1'], summary_data['Time_toFirst_Fix_I2'])
 
                     if trial in transition_data:
                         for key, val in transition_data[trial].items():
