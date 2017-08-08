@@ -40,7 +40,7 @@ def get_next_window(x, y, t):
     start_time = twindow[0]
     while (
         # if want to enforce max num of pts in window
-        # len(xwindow) < max_pts_in_window
+        len(xwindow) < max_pts_in_window
         index < len(x)
         and t[index] - start_time <= MAX_TIME_IN_WINDOW
     ):
