@@ -106,12 +106,11 @@ def identify_fixations(rows):
                     plus_n_xwindow += [x[i+n]]
                     plus_n_ywindow += [y[i+n]]
                     plus_n_twindow += [t[i+n]]
-                    plus_n_prev_time = plus_n_twindow[i + n - 1]
 
                     if (
                         abs(float(max(plus_n_xwindow)) - float(min(plus_n_xwindow))) <= DIST_PIX
                         and abs(float(max(plus_n_ywindow)) - float(min(plus_n_ywindow))) <= DIST_PIX
-                        and plus_n_twindow[i+n] - prev_time <= MAX_MS_BETWEEN_PTS_IN_FIXATION
+                        and plus_n_twindow[-1] - plus_n_twindow[-2] <= MAX_MS_BETWEEN_PTS_IN_FIXATION
                     ):
                         undo_end_fixation = True
                         break
