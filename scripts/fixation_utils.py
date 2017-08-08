@@ -163,7 +163,7 @@ def get_transitions(rows):
         trial_to_data[trial_num][fixation].append(aoi)
 
     # iterate data and add transitions to dictionary
-    for trial_num, data in trial_to_data.iteritems():
+    for trial_num, data in trial_to_data.items():
 
         if trial_num not in trial_to_transitions:
             trial_to_transitions[trial_num] = []
@@ -178,7 +178,7 @@ def get_transitions(rows):
 
     trial_to_transition_cnts = {}
 
-    for trial, list_transitions in trial_to_transitions.iteritems():
+    for trial, list_transitions in trial_to_transitions.items():
         trial_to_transition_cnts[trial] = {t[2]:0 for t in settings.transitions}
         for transition in list_transitions:
             key = transition[0] + '-' + transition[1]
@@ -307,7 +307,7 @@ def summary_gaze_data(rows):
             trial_to_default_vals[trial][key] = True
             trial_to_data[trial][key] = start_time
 
-    for trial, aois_times in trial_to_aois.iteritems():
+    for trial, aois_times in trial_to_aois.items():
         trial_to_data[trial]['VisualSearch_R'],trial_to_data[trial]['SearchTime_R']  = get_visual_search(aois_times)
         trial_to_data[trial]['VisualSearch_I'],trial_to_data[trial]['SearchTime_I']  = get_last_I(aois_times)
         trial_to_data[trial]['VisualSearch_I_trans'],trial_to_data[trial]['SearchTime_I_trans']  = get_last_Itrans(aois_times)

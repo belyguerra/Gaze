@@ -74,7 +74,7 @@ def add_ocular_data_to_dataset(combined_data_set, rows):
         key = r['Trial'] + ':' + r['Time']
         if key not in combined_data_set:
             combined_data_set[key] = get_new_data_row()
-        for col, value in r.iteritems():
+        for col, value in r.items():
             combined_data_set[key][col] = value
 
 ## functions to assign a condition to each trial. conditions specified in settings.

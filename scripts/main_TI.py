@@ -91,7 +91,7 @@ def main():
                             summary_data[key] = settings.default_value
 
                     if trial in summary_gaze_data:
-                        for key, val in summary_gaze_data[trial].iteritems():
+                        for key, val in summary_gaze_data[trial].items():
                             summary_data[key] = val
 
                         # combine gaze data for the main AOIs (e.g., rel vs. irrelevant scales)
@@ -104,7 +104,7 @@ def main():
                         summary_data['Time_toFirst_Fix_I'] = df_utils.min_vals(summary_data['Time_toFirst_Fix_I1'], 'Time_toFirst_Fix_I2')
 
                     if trial in transition_data:
-                        for key, val in transition_data[trial].iteritems():
+                        for key, val in transition_data[trial].items():
                             summary_data[key] = val
 
                         summary_data['Q-R'] = df_utils.combine_vals(summary_data['Q-R1'], summary_data['R1-Q'])
