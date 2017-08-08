@@ -44,7 +44,7 @@ def get_next_window(x, y, t, trials):
         #len(xwindow) < max_pts_in_window
         index < len(x)
         and t[index] - start_time <= MAX_TIME_IN_WINDOW
-        and trials[index] != current_trial
+        and trials[index] == current_trial
     ):
         xwindow.append(x[index])
         ywindow.append(y[index])
