@@ -12,7 +12,7 @@ gazecols = trialcols + ['Gaze(x)', 'Gaze(y)'] + timecols + xtracols
 pupilcols = trialcols + ['Pupil(x)', 'Pupil(y)'] + timecols + ['empty']
 blinkcols = trialcols + ['Gaze(x)', 'Gaze(y)'] + timecols
 print blinkcols
-behavcols = ['Trial', 'CorrectAnswer', 'ResponseClicked','SubjectResponse', 'RT_Solving', 
+behavcols = ['Trial', 'CorrectAnswer', 'ResponseClicked','SubjectResponse', 'RT_Solving',
              'RT_SolvingUnc', 'RT_Response', 'RT_ResponseUnc', 'ListAOIs']
 
 #headers for the file that is used for plotting the grid with fixation patterns.
@@ -20,8 +20,8 @@ fixation_headers = ['PID', 'Block', 'Trial', 'Condition', 'Fixation', 'AOI', 'Fi
 
 #headers for the summary file that has aggregate data from all subjects
 summary_headers = [
-    'PID', 'Block', 'Trial', 'Condition', 'ACC', 'RT', 
-    'TotalFixations', 'TotalFixations_N', 'TotalFixation_P', 'TotalFixations_A', 
+    'PID', 'Block', 'Trial', 'Condition', 'ACC', 'RT',
+    'TotalFixations', 'TotalFixations_N', 'TotalFixation_P', 'TotalFixations_A',
     'TotalFixTime', 'TotalFixTime_N', 'TotalFixTime_P', 'TotalFixTime_A',
     'Time_toFirst_Fix_P', 'Time_toFirst_Fix_A',
     'TotalTransitions', 'P-P', 'P-A', 'A-P', 'A-A'
@@ -69,66 +69,35 @@ filepath_dic_pic_B = os.path.join(dic_dir, 'setB_list_image_m.txt')
 default_value = np.nan
 
 #(xmin, xmax, ymin, ymax)
+#old p = (306, 970, 48, 558, 'P')
+#old a = (209, 1064, 625, 970, 'A')
+#change to use presentation coordinates
+
 AOIs = {
-
-    '1_rule': [
-        (209, 1064, 625, 970, 'A'), 
-        (306, 970, 48, 558, 'P')
-    ],
-    
-    '2_rule': [
-        (209, 1064, 625, 970, 'A'), 
-        (306, 970, 48, 558, 'P')
-    ],
-
-    '3_rule': [
-        (209, 1064, 625, 970, 'A'), 
-        (306, 970, 48, 558, 'P')
+    'Problem_AOIS': [
+        (-335, 335, -50, 480, 'P')
+        (-235, -145, 388, 478, 'P1'),
+        (-45, 45, 388, 478, 'P2'),
+        (145, 235, 388, 478, 'P3'),
+        (-235, -145, 193, 283, 'P4'),
+        (-45, 45, 193, 283, 'P5'),
+        (145, 235, 193, 283, 'P6'),
+        (-235, -145, 36, 126, 'P7'),
+        (-45, 45, 36, 126, 'P8'),
+        (145, 235, 36, 126, 'PQ')
     ],
 
-}
-
-xtraAOIS = {    
-    
-    'IneqEq1': [
-        (400, 792, 625, 875, 'Q'),
-        (65, 318, 178, 472, 'R1'),
-        (631, 884, 178, 472, 'R2'),
-        (348, 601, 178, 472, 'I1'),
-        (914, 1167, 178, 472, 'I2')
-    ],
-
-    'IneqEq2': [
-        (400, 792, 625, 875, 'Q'),
-        (65, 318, 178, 472, 'R1'),
-        (914, 1167, 178, 472, 'R2'),
-        (348, 601, 178, 472, 'I1'),
-        (631, 884, 178, 472, 'I2')
-    ],
-
-    'IneqIneq0': [
-        (400, 792, 625, 875, 'Q'),
-        (631, 884, 178, 472, 'R1'),
-        (914, 1167, 178, 472, 'R2'),
-        (65, 318, 178, 472, 'I1'),
-        (348, 601, 178, 472, 'I2')
-    ],
-
-    'IneqIneq1': [
-        (400, 792, 625, 875, 'Q'),
-        (348, 601, 178, 472, 'R1'),
-        (914, 1167, 178, 472, 'R2'),
-        (65, 318, 178, 472, 'I1'),
-        (631, 884, 178, 472, 'I2')
-    ],
-
-    'IneqIneq2': [
-        (400, 792, 625, 875, 'Q'),
-        (65, 318, 178, 472, 'R1'),
-        (914, 1167, 178, 472, 'R2'),
-        (348, 601, 178, 472, 'I1'),
-        (631, 884, 178, 472, 'I2')
-     ]
+    'Answers_AOIS': [
+        (-430, 430, -464, -110, 'A'),
+        (-330, -240, -286, -196, 'A1'),
+        (-140, -50, -286, -196, 'A2'),
+        (50, 140, -286, -196, 'A3'),
+        (240, 330, -286, -196, 'A4'),
+        (-330, -240, -462 -372, 'A5'),
+        (-140, -50, -462, -372, 'A6'),
+        (50, 140, -462, -372, 'A7'),
+        (240, 330, -462, -372, 'A8')
+    ]
 }
 
 transitions = {
@@ -143,5 +112,21 @@ transitions = {
 ('A', 'N', 'A-N'),
 ('A', 'P', 'A-P'),
 ('A', 'A', 'A-A'),
+
+#direct horizontal
+('P1', 'P2', 'P12'),
+('P2', 'P3', 'P23'),
+('P4', 'P5', 'P45'),
+('P5', 'P6', 'P56'),
+('P7', 'P8', 'P78'),
+('P8', 'PQ', 'P8Q'),
+
+#direct vertical
+('P1', 'P4', 'P14'),
+('P2', 'P5', 'P25'),
+('P3', 'P6', 'P36'),
+('P4', 'P7', 'P47'),
+('P5', 'P8', 'P58'),
+('P6' , 'PQ', 'P6Q'),
 
 }

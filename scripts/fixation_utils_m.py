@@ -16,10 +16,9 @@ def ogama_coordiates(row):
     row['Gaze(x)_ogama'] = x + 640
     row['Gaze(y)_ogama'] = (y*-1) + 512
 
-# infers AOI based on the gaze coordinates. AOIs defined in settings
 def add_aoi(row):
-    x = float(row['Gaze(x)_ogama'])
-    y = float(row['Gaze(y)_ogama'])
+    x = float(row['Gaze(x)'])
+    y = float(row['Gaze(y)'])
     condition = row['Condition']
     row['AOI'] = 'N' #nowhere
     if x == settings.default_value or y == settings.default_value:
@@ -30,44 +29,132 @@ def add_aoi(row):
             row['AOI'] = aoi_data[4]
             return
 
+def get_next_window(x, y, t, trials):
+    xwindow = x[0:1]
+    ywindow = y[0:1]
+    twindow = t[0:1]
+    current_trial = trials[0]
+
+    MAX_TIME_IN_WINDOW = 125
+    index = 1
+    start_time = twindow[0]
+    while (
+        # if want to enforce max num of pts in window
+        #len(xwindow) < max_pts_in_window
+        index < len(x)
+        and t[index] - start_time <= MAX_TIME_IN_WINDOW
+        and trials[index] == current_trial
+    ):
+        xwindow.append(x[index])
+        ywindow.append(y[index])
+        twindow.append(t[index])
+        index += 1
+
+    return xwindow, ywindow, twindow
+
 # IDs fixations - must be run before describe_fixations function
 # gaze data grouped as one fixation if within 100ms the dispertation <= 35px
+# make function to get the next x&y within time_limit, xwindow and ywindo take the result of that func
+# change this to keep track of time (t) similar to how i keep track of x&y, need to check if t is within time window
 def identify_fixations(rows):
     fixs = []
     counter = 0
-    x = [float(row['Gaze(x)_ogama']) for row in rows]
-    y = [float(row['Gaze(y)_ogama']) for row in rows]
-    while len(x) > 1:
-        xwindow = x[0:12]
-        ywindow = y[0:12] 
-        if (abs(float(max(xwindow)) - float(min(xwindow))) <= 35) and (abs(float(max(ywindow)) - float(min(ywindow))) <= 35):
-            i = 12
-            while (abs(float(max(xwindow)) - float(min(xwindow))) <= 35) and (abs(float(max(ywindow)) - float(min(ywindow)))) <= 35 and i < len(x):
-                xwindow.append(x[i])
-                ywindow.append(y[i])
+    MAX_MS_BETWEEN_PTS_IN_FIXATION = 40
+    MIN_PTS_IN_WINDOW = 6
+    MIN_MS_WINDOW = 100
+    DIST_PIX = 35
+    MAX_OUTLIER_PTS = 1
+    x = [float(row['Gaze(x)']) for row in rows]
+    y = [float(row['Gaze(y)']) for row in rows]
+    t = [int(row['Time']) for row in rows]
+    trials = [row['Trial'] for row in rows]
+    while len(x) > 0:
+        xwindow, ywindow, twindow = get_next_window(x, y, t, trials)
+        current_trial = trials[0]
+        num_points_skipped = 0
+        if (
+            len(xwindow) >= MIN_PTS_IN_WINDOW
+            and abs(float(max(xwindow)) - float(min(xwindow))) <= DIST_PIX
+            and abs(float(max(ywindow)) - float(min(ywindow))) <= DIST_PIX
+            and twindow[-1] - twindow[0] >= MIN_MS_WINDOW
+        ):
+            i = len(xwindow)
+            undo_end_fixation = True
+            while undo_end_fixation:
+                while i < len(x):
+                    if abs(float(max(xwindow + [x[i]])) - float(min(xwindow + [x[i]]))) > DIST_PIX:
+                        break
+                    elif abs(float(max(ywindow + [y[i]])) - float(min(ywindow + [y[i]]))) > DIST_PIX:
+                        break
+                    if t[i] - t[i-1] > MAX_MS_BETWEEN_PTS_IN_FIXATION:
+                        break
+                    if trials[i] != current_trial:
+                        break
+
+                    xwindow.append(x[i])
+                    ywindow.append(y[i])
+                    twindow.append(t[i])
+                    i += 1
+
+                undo_end_fixation = False
+                # if reached the end, don't undo end fixation
+                if i >= len(x):
+                    break
+                # if trial changed, don't undo end fixation
+                if trials[i] != current_trial:
+                    break
+                # if next point is too far in future, don't undo end fixation
+                if t[i] - t[i-1] > MAX_MS_BETWEEN_PTS_IN_FIXATION:
+                    break
+
+                # add point i to window
+                plus_n_xwindow = xwindow + [x[i]]
+                plus_n_ywindow = ywindow + [y[i]]
+                plus_n_twindow = twindow + [t[i]]
                 i += 1
+                n = 0
+                while i + n < len(x):
+                    if n >= MAX_OUTLIER_PTS:
+                        break
+                    if t[i + n] - t[i + n - 1] > MAX_MS_BETWEEN_PTS_IN_FIXATION:
+                        break
+                    if trials[i + n] != current_trial:
+                        break
+                    if (
+                        abs(float(max(plus_n_xwindow + [x[n+i]])) - float(min(plus_n_xwindow + [x[n+i]]))) <= DIST_PIX
+                        and abs(float(max(plus_n_ywindow + [y[n+i]])) - float(min(plus_n_ywindow + [y[n+i]]))) <= DIST_PIX
+                    ):
+                        undo_end_fixation = True
+                        break
+                    else:
+                        plus_n_xwindow += [x[n+i]]
+                        plus_n_ywindow += [y[n+i]]
+                        plus_n_twindow += [t[n+i]]
+                    n += 1
+
+                if undo_end_fixation:
+                    xwindow = plus_n_xwindow
+                    ywindow = plus_n_ywindow
+                    twindow = plus_n_twindow
+                    i += n + 1
+
             counter += 1
-            fixs += [counter] * (len(xwindow)-1)
-            x = x[len(xwindow)-1:]
-            y = y[len(ywindow)-1:]
+            fixs += [counter] * len(xwindow)
+            x = x[len(xwindow):]
+            y = y[len(ywindow):]
+            t = t[len(twindow):]
+            trials = trials[len(twindow):]
         else:
             x = x[1:]
             y = y[1:]
+            t = t[1:]
+            trials = trials[1:]
             fixs += [-1]
 
-    #classify last point
-    if len(x) != 0:
-        xwindow.append(x[0])
-        ywindow.append(y[0])
-        if (abs(float(max(xwindow)) - float(min(xwindow))) <= 35) and (abs(float(max(ywindow)) - float(min(ywindow))) <= 35):
-            fixs += [counter]
-        else:
-            fixs += [-1]
     if len(fixs) != len(rows):
         raise Exception('number of fixations is not the same as number of rows')
     for i, row in enumerate(rows):
         row['Fixation'] = fixs[i]
-
 
 # trial -> transition_cnt_dictionary
 def get_transitions(rows):
@@ -81,21 +168,21 @@ def get_transitions(rows):
 
         if fixation == settings.default_value or fixation == -1:
             continue
-                
+
         if trial_num not in trial_to_data:
             trial_to_data[trial_num] = {}
-        
+
         if fixation not in trial_to_data[trial_num]:
             trial_to_data[trial_num][fixation] = []
-            
+
         trial_to_data[trial_num][fixation].append(aoi)
-        
+
     # iterate data and add transitions to dictionary
-    for trial_num, data in trial_to_data.iteritems():
-        
+    for trial_num, data in trial_to_data.items():
+
         if trial_num not in trial_to_transitions:
             trial_to_transitions[trial_num] = []
-        
+
         sorted_fixations = sorted(data.keys())
         if len(sorted_fixations) > 1:
             prev_aoi = Counter(data[sorted_fixations[0]]).most_common()[0][0]
@@ -106,7 +193,7 @@ def get_transitions(rows):
 
     trial_to_transition_cnts = {}
 
-    for trial, list_transitions in trial_to_transitions.iteritems():
+    for trial, list_transitions in trial_to_transitions.items():
         trial_to_transition_cnts[trial] = {t[2]:0 for t in settings.transitions}
         for transition in list_transitions:
             key = transition[0] + '-' + transition[1]
@@ -175,7 +262,6 @@ def describe_fixations(rows):
     return output_fixation_data
 
 
-
 def summary_gaze_data(rows):
     trial_to_data = {}
     trial_to_aois = {}
@@ -184,16 +270,16 @@ def summary_gaze_data(rows):
         trial = int(row['Trial'])
         if trial not in trial_to_data:
             trial_to_data[trial]= {
-                'TotalFixations': 0, 
-                'TotalFixations_N': 0, 
+                'TotalFixations': 0,
+                'TotalFixations_N': 0,
                 'TotalFixations_P': 0,
-                'TotalFixations_A': 0, 
-                'TotalFixTime': 0, 
-                'TotalFixTime_N': 0, 
+                'TotalFixations_A': 0,
+                'TotalFixTime': 0,
+                'TotalFixTime_N': 0,
                 'TotalFixTime_P': 0,
-                'TotalFixTime_A': 0, 
+                'TotalFixTime_A': 0,
                 'Time_toFirst_Fix_P': settings.default_value,
-                'Time_toFirst_Fix_A': settings.default_value, 
+                'Time_toFirst_Fix_A': settings.default_value,
                 'Time_toFirst_Fix_N': settings.default_value,
             }
             trial_to_default_vals[trial] = {}
@@ -214,81 +300,10 @@ def summary_gaze_data(rows):
         trial_to_data[trial]['TotalFixTime'] += duration
         key = 'TotalFixTime_' + aoi
         trial_to_data[trial][key] += duration
-        
+
         key = 'Time_toFirst_Fix_'+ aoi
         if key not in trial_to_default_vals[trial]:
             trial_to_default_vals[trial][key] = True
             trial_to_data[trial][key] = start_time
 
     return trial_to_data
-
-def get_visual_search(aois_times):
-    visual_search = settings.default_value
-    search_time = settings.default_value
-
-    start = -1
-    index = -1
-    match_count = 0
-    for aoi, time in aois_times:
-        index += 1
-
-        if aoi == 'N' or aoi == 'Q':
-            continue
-        elif aoi[0] != 'R':
-            match_count = 0
-            start = -1
-        else:
-            match_count += 1
-            if start == -1:
-                start = index
-                #time_start = time
-
-            if match_count == 3:
-                visual_search = start
-                search_time = time
-                break
-
-    return visual_search, search_time
-
-def get_last_I(aois_times):
-    search_last_I = settings.default_value
-    time_last_I = settings.default_value
-
-    index = -1
-    
-    for aoi, time in aois_times:
-        index += 1
-
-        if aoi[0] == 'I':
-            search_last_I = index
-            time_last_I = time
-        
-    return search_last_I, time_last_I
-
-def get_last_Itrans(aois_times):
-    search_last_Itrans = settings.default_value
-    time_last_Itrans = settings.default_value
-
-    start = -1
-    index = -1
-    match_count = 0
-    for aoi, time in aois_times:
-        index += 1
-
-        if aoi == 'N' or aoi == 'Q':
-            continue
-        elif aoi[0] != 'I':
-            match_count = 0
-            start = -1
-        else:
-            match_count += 1
-            if start == -1:
-                start = index
-                #time_start = time
-
-            if match_count == 2:
-                visual_search = start
-                search_time = time
-                break
-
-    return visual_search, search_time
