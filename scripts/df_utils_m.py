@@ -88,10 +88,9 @@ def get_trial_dic(filename):
 # maps the condition to the trial key
 def map_conditions(new_column, row_data, trial_dic):
     if row_data['Trial'] not in trial_dic:
-        raise Exception('trial not found %s' % row_data['Trial']) 
+        raise Exception('trial not found %s' % row_data['Trial'])
 
     row_data[new_column] = trial_dic[row_data['Trial']]
-
 
 # ogama can only read sbj ids that start with a letter
 def ogama_subject(subjid, block, row):
@@ -124,18 +123,28 @@ def min_vals(val1, val2):
 
     return min(val1, val2)
 
-# write out function to 
+# write out function to
 def output_rows(filepath, rows):
     if len(rows) == 0:
         raise Exception('Nothing to write!')
-        
+
     with open(filepath, 'w') as f:
         headers = list(rows[0].keys())
         f.write('\t'.join(headers))
         f.write('\n')
-        
+
         for row in rows:
             values = [str(row[header]) for header in headers]
             line = '\t'.join(values)
             f.write(line)
             f.write('\n')
+
+# map answer picture to position
+def map_picture_aoi(row, rule_dict):
+    pic_aoi_dict = {}
+    picture_ids = row['ListAOIs'].split(',')
+    aoi = 1
+    for pic in picture_ids:
+        pic_aoi_dict[pic] = ('A'+str(aoi), rule_dict[pic])
+        aoi += 1
+    return pic_aoi_dict

@@ -39,7 +39,7 @@ def identify_fixations(rows):
     y = [float(row['Gaze(y)_ogama']) for row in rows]
     while len(x) > 1:
         xwindow = x[0:12]
-        ywindow = y[0:12] 
+        ywindow = y[0:12]
         if (abs(float(max(xwindow)) - float(min(xwindow))) <= 35) and (abs(float(max(ywindow)) - float(min(ywindow))) <= 35):
             i = 12
             while (abs(float(max(xwindow)) - float(min(xwindow))) <= 35) and (abs(float(max(ywindow)) - float(min(ywindow)))) <= 35 and i < len(x):
@@ -81,21 +81,21 @@ def get_transitions(rows):
 
         if fixation == settings.default_value or fixation == -1:
             continue
-                
+
         if trial_num not in trial_to_data:
             trial_to_data[trial_num] = {}
-        
+
         if fixation not in trial_to_data[trial_num]:
             trial_to_data[trial_num][fixation] = []
-            
+
         trial_to_data[trial_num][fixation].append(aoi)
-        
+
     # iterate data and add transitions to dictionary
     for trial_num, data in trial_to_data.iteritems():
-        
+
         if trial_num not in trial_to_transitions:
             trial_to_transitions[trial_num] = []
-        
+
         sorted_fixations = sorted(data.keys())
         if len(sorted_fixations) > 1:
             prev_aoi = Counter(data[sorted_fixations[0]]).most_common()[0][0]
@@ -184,16 +184,16 @@ def summary_gaze_data(rows):
         trial = int(row['Trial'])
         if trial not in trial_to_data:
             trial_to_data[trial]= {
-                'TotalFixations': 0, 
-                'TotalFixations_N': 0, 
+                'TotalFixations': 0,
+                'TotalFixations_N': 0,
                 'TotalFixations_P': 0,
-                'TotalFixations_A': 0, 
-                'TotalFixTime': 0, 
-                'TotalFixTime_N': 0, 
+                'TotalFixations_A': 0,
+                'TotalFixTime': 0,
+                'TotalFixTime_N': 0,
                 'TotalFixTime_P': 0,
-                'TotalFixTime_A': 0, 
+                'TotalFixTime_A': 0,
                 'Time_toFirst_Fix_P': settings.default_value,
-                'Time_toFirst_Fix_A': settings.default_value, 
+                'Time_toFirst_Fix_A': settings.default_value,
                 'Time_toFirst_Fix_N': settings.default_value,
             }
             trial_to_default_vals[trial] = {}
@@ -214,7 +214,7 @@ def summary_gaze_data(rows):
         trial_to_data[trial]['TotalFixTime'] += duration
         key = 'TotalFixTime_' + aoi
         trial_to_data[trial][key] += duration
-        
+
         key = 'Time_toFirst_Fix_'+ aoi
         if key not in trial_to_default_vals[trial]:
             trial_to_default_vals[trial][key] = True
@@ -255,14 +255,14 @@ def get_last_I(aois_times):
     time_last_I = settings.default_value
 
     index = -1
-    
+
     for aoi, time in aois_times:
         index += 1
 
         if aoi[0] == 'I':
             search_last_I = index
             time_last_I = time
-        
+
     return search_last_I, time_last_I
 
 def get_last_Itrans(aois_times):
