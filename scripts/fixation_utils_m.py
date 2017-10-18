@@ -59,6 +59,7 @@ def get_next_window(x, y, t, trials):
 def identify_fixations(rows):
     fixs = []
     counter = 0
+<<<<<<< HEAD
     MAX_MS_BETWEEN_PTS_IN_FIXATION = 40
     MIN_PTS_IN_WINDOW = 6
     MIN_MS_WINDOW = 100
@@ -111,6 +112,18 @@ def identify_fixations(rows):
                 plus_n_xwindow = xwindow + [x[i]]
                 plus_n_ywindow = ywindow + [y[i]]
                 plus_n_twindow = twindow + [t[i]]
+=======
+    x = [float(row['Gaze(x)_ogama']) for row in rows]
+    y = [float(row['Gaze(y)_ogama']) for row in rows]
+    while len(x) > 1:
+        xwindow = x[0:12]
+        ywindow = y[0:12]
+        if (abs(float(max(xwindow)) - float(min(xwindow))) <= 35) and (abs(float(max(ywindow)) - float(min(ywindow))) <= 35):
+            i = 12
+            while (abs(float(max(xwindow)) - float(min(xwindow))) <= 35) and (abs(float(max(ywindow)) - float(min(ywindow)))) <= 35 and i < len(x):
+                xwindow.append(x[i])
+                ywindow.append(y[i])
+>>>>>>> a86357fac5092fb96f3ecc965b0f6e6d9f74a5e2
                 i += 1
                 n = 0
                 while i + n < len(x):
@@ -178,7 +191,11 @@ def get_transitions(rows):
         trial_to_data[trial_num][fixation].append(aoi)
 
     # iterate data and add transitions to dictionary
+<<<<<<< HEAD
     for trial_num, data in trial_to_data.items():
+=======
+    for trial_num, data in trial_to_data.iteritems():
+>>>>>>> a86357fac5092fb96f3ecc965b0f6e6d9f74a5e2
 
         if trial_num not in trial_to_transitions:
             trial_to_transitions[trial_num] = []
@@ -307,3 +324,77 @@ def summary_gaze_data(rows):
             trial_to_data[trial][key] = start_time
 
     return trial_to_data
+<<<<<<< HEAD
+=======
+
+def get_visual_search(aois_times):
+    visual_search = settings.default_value
+    search_time = settings.default_value
+
+    start = -1
+    index = -1
+    match_count = 0
+    for aoi, time in aois_times:
+        index += 1
+
+        if aoi == 'N' or aoi == 'Q':
+            continue
+        elif aoi[0] != 'R':
+            match_count = 0
+            start = -1
+        else:
+            match_count += 1
+            if start == -1:
+                start = index
+                #time_start = time
+
+            if match_count == 3:
+                visual_search = start
+                search_time = time
+                break
+
+    return visual_search, search_time
+
+def get_last_I(aois_times):
+    search_last_I = settings.default_value
+    time_last_I = settings.default_value
+
+    index = -1
+
+    for aoi, time in aois_times:
+        index += 1
+
+        if aoi[0] == 'I':
+            search_last_I = index
+            time_last_I = time
+
+    return search_last_I, time_last_I
+
+def get_last_Itrans(aois_times):
+    search_last_Itrans = settings.default_value
+    time_last_Itrans = settings.default_value
+
+    start = -1
+    index = -1
+    match_count = 0
+    for aoi, time in aois_times:
+        index += 1
+
+        if aoi == 'N' or aoi == 'Q':
+            continue
+        elif aoi[0] != 'I':
+            match_count = 0
+            start = -1
+        else:
+            match_count += 1
+            if start == -1:
+                start = index
+                #time_start = time
+
+            if match_count == 2:
+                visual_search = start
+                search_time = time
+                break
+
+    return visual_search, search_time
+>>>>>>> a86357fac5092fb96f3ecc965b0f6e6d9f74a5e2

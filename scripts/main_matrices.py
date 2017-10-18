@@ -14,6 +14,7 @@ def main():
     dic_cond_B = df_utils.get_trial_dic(settings.filepath_dic_cond_A)
     dic_pic_A = df_utils.get_trial_dic(settings.filepath_dic_pic_A)
     dic_pic_B = df_utils.get_trial_dic(settings.filepath_dic_pic_B)
+    dic_rules = df_utils.get_trial_dic('filedict')
 
     default_row = {}
     for subjid in range(100,197):
@@ -50,6 +51,10 @@ def main():
                     trial_dic = dic_pic_A if block == 'A' else dic_pic_B
                     df_utils.map_conditions('Image_file', row, trial_dic)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> a86357fac5092fb96f3ecc965b0f6e6d9f74a5e2
                     fixation_utils.ogama_coordiates(row)
                     df_utils.ogama_subject(subjid, block, row)
 
@@ -112,7 +117,11 @@ def main():
                         #summary_data['Q-R'] += df_utils.combine_vals(summary_data['Q-R2'], summary_data['R2-Q'])
                         #summary_data['Q-I'] = df_utils.combine_vals(summary_data['Q-I1'], summary_data['I1-Q'])
                         #summary_data['Q-I'] += df_utils.combine_vals(summary_data['Q-I2'], summary_data['I2-Q'])
+<<<<<<< HEAD
                         #summary_data['R-R'] = df_utils.combine_vals(summary_data['R1-R2'], summary_data['R2-R1']) 
+=======
+                        #summary_data['R-R'] = df_utils.combine_vals(summary_data['R1-R2'], summary_data['R2-R1'])
+>>>>>>> a86357fac5092fb96f3ecc965b0f6e6d9f74a5e2
                         #summary_data['R-R'] += df_utils.combine_vals(summary_data['R1-R1'], summary_data['R2-R2'])
                         #summary_data['R-I'] = df_utils.combine_vals(summary_data['R1-I1'], summary_data['I1-R1'])
                         #summary_data['R-I'] += df_utils.combine_vals(summary_data['R1-I2'], summary_data['R1-I2'])
