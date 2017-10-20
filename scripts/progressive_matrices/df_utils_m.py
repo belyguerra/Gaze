@@ -78,7 +78,7 @@ def add_ocular_data_to_dataset(combined_data_set, rows):
 
 ## functions to assign a condition to each trial. conditions specified in settings.
 # sets keys for trial number
-def get_trial_dic(filename):
+def get_dic(filename):
     d = {}
     with open(filename, 'r') as d_list:
         for line in d_list:
@@ -145,6 +145,6 @@ def map_picture_aoi(row, rule_dict):
     picture_ids = row['ListAOIs'].split(',')
     aoi = 1
     for pic in picture_ids:
-        pic_aoi_dict[pic] = ('A'+str(aoi), rule_dict[pic])
+        pic_aoi_dict['A'+str(aoi)] = (pic, rule_dict[pic])
         aoi += 1
     return pic_aoi_dict

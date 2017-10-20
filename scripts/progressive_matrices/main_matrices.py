@@ -10,11 +10,11 @@ def main():
     failed=[]
     summary_rows = []
     fixation_rows = []
-    dic_cond_A = df_utils.get_trial_dic(settings.filepath_dic_cond_A)
-    dic_cond_B = df_utils.get_trial_dic(settings.filepath_dic_cond_A)
-    dic_pic_A = df_utils.get_trial_dic(settings.filepath_dic_pic_A)
-    dic_pic_B = df_utils.get_trial_dic(settings.filepath_dic_pic_B)
-    dic_rules = df_utils.get_trial_dic('filedict')
+    dic_cond_A = df_utils.get_dic(settings.filepath_dic_cond_A)
+    dic_cond_B = df_utils.get_dic(settings.filepath_dic_cond_A)
+    dic_pic_A = df_utils.get_dic(settings.filepath_dic_pic_A)
+    dic_pic_B = df_utils.get_dic(settings.filepath_dic_pic_B)
+    dic_rules = df_utils.get_dic('mydic')
 
     default_row = {}
     for subjid in range(100,197):
@@ -51,14 +51,11 @@ def main():
                     trial_dic = dic_pic_A if block == 'A' else dic_pic_B
                     df_utils.map_conditions('Image_file', row, trial_dic)
 
-<<<<<<< HEAD
-=======
-
->>>>>>> a86357fac5092fb96f3ecc965b0f6e6d9f74a5e2
                     fixation_utils.ogama_coordiates(row)
                     df_utils.ogama_subject(subjid, block, row)
 
                     fixation_utils.add_aoi(row)
+                    fixation_utils.add_rules_violated(row, dic_rules)
 
                 fixation_utils.identify_fixations(gaze)
                 output_gazefile = os.path.join(settings.output_gaze_processed_dir, str(subjid)+ '_' +block+'_processed_gaze.tsv')
@@ -100,35 +97,11 @@ def main():
                         for key, val in summary_gaze_data[trial].iteritems():
                             summary_data[key] = val
 
-                        # combine gaze data for the main AOIs (e.g., rel vs. irrelevant scales)
-
-                        #summary_data['TotalFixations_R'] = df_utils.combine_vals(summary_data['TotalFixations_R1'], summary_data['TotalFixations_R2'])
-                        #summary_data['TotalFixations_I'] = df_utils.combine_vals(summary_data['TotalFixations_I1'], summary_data['TotalFixations_I2'])
-                        #summary_data['TotalFixTime_R'] = df_utils.combine_vals(summary_data['TotalFixTime_R1'], summary_data['TotalFixTime_R2'])
-                        #summary_data['TotalFixTime_I'] = df_utils.combine_vals(summary_data['TotalFixTime_I1'], summary_data['TotalFixTime_I2'])
-                        #summary_data['Time_toFirst_Fix_R'] = df_utils.min_vals(summary_data['Time_toFirst_Fix_R1'], 'Time_toFirst_Fix_R2')
-                        #summary_data['Time_toFirst_Fix_I'] = df_utils.min_vals(summary_data['Time_toFirst_Fix_I1'], 'Time_toFirst_Fix_I2')
-
                     if trial in transition_data:
                         for key, val in transition_data[trial].iteritems():
                             summary_data[key] = val
 
                         summary_data['P-A_bi'] = df_utils.combine_vals(summary_data['P-A'], summary_data['A-P'])
-                        #summary_data['Q-R'] += df_utils.combine_vals(summary_data['Q-R2'], summary_data['R2-Q'])
-                        #summary_data['Q-I'] = df_utils.combine_vals(summary_data['Q-I1'], summary_data['I1-Q'])
-                        #summary_data['Q-I'] += df_utils.combine_vals(summary_data['Q-I2'], summary_data['I2-Q'])
-<<<<<<< HEAD
-                        #summary_data['R-R'] = df_utils.combine_vals(summary_data['R1-R2'], summary_data['R2-R1']) 
-=======
-                        #summary_data['R-R'] = df_utils.combine_vals(summary_data['R1-R2'], summary_data['R2-R1'])
->>>>>>> a86357fac5092fb96f3ecc965b0f6e6d9f74a5e2
-                        #summary_data['R-R'] += df_utils.combine_vals(summary_data['R1-R1'], summary_data['R2-R2'])
-                        #summary_data['R-I'] = df_utils.combine_vals(summary_data['R1-I1'], summary_data['I1-R1'])
-                        #summary_data['R-I'] += df_utils.combine_vals(summary_data['R1-I2'], summary_data['R1-I2'])
-                        #summary_data['R-I'] += df_utils.combine_vals(summary_data['R2-I1'], summary_data['R2-I1'])
-                        #summary_data['R-I'] += df_utils.combine_vals(summary_data['R2-I2'], summary_data['R2-I2'])
-                        #summary_data['I-I'] = df_utils.combine_vals(summary_data['I1-I2'], summary_data['I2-I1'])
-                        #summary_data['I-I'] += df_utils.combine_vals(summary_data['I1-I1'], summary_data['I2-I2'])
 
                     summary_rows.append(summary_data)
 

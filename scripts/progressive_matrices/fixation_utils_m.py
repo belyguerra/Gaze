@@ -23,11 +23,20 @@ def add_aoi(row):
     row['AOI'] = 'N' #nowhere
     if x == settings.default_value or y == settings.default_value:
         return
-    aoi_list = settings.AOIs[condition]
+    aoi_list = settings.AOIs
     for aoi_data in aoi_list:
         if x >= aoi_data[0] and x <= aoi_data[1] and y >= aoi_data[2] and y <= aoi_data[3]:
             row['AOI'] = aoi_data[4]
             return
+
+def add_rules_violated(row, dic_rules):
+    aoi_to_rules = df_utils_m.map_picture_aoi(row, dic_rules)
+    aoi = row['AOI']
+    if aoi not in aoi_to_rules:
+        row['rules_violated'] = settings.default_value
+    else:
+        row['rules_violated'] = aoi_to_rules[aoi][1]
+
 
 def get_next_window(x, y, t, trials):
     xwindow = x[0:1]
