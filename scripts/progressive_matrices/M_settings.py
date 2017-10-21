@@ -62,6 +62,7 @@ filepath_dic_cond_A = os.path.join(dic_dir, 'setA_list_condition_m.txt')
 filepath_dic_cond_B = os.path.join(dic_dir, 'setB_list_conditiont_m.txt')
 filepath_dic_pic_A = os.path.join(dic_dir, 'setA_list_image_m.txt')
 filepath_dic_pic_B = os.path.join(dic_dir, 'setB_list_image_m.txt')
+filepath_dic_rules = os.path.join(dic_dir, 'answer_rules.txt')
 
 
 ###################################################################################
@@ -71,9 +72,9 @@ default_value = np.nan
 #(xmin, xmax, ymin, ymax)
 #old p = (306, 970, 48, 558, 'P')
 #old a = (209, 1064, 625, 970, 'A')
-#change to use presentation coordinates
+#newer but unused for now
 #(-335, 335, -50, 480, 'P')
-#(-430, 430, -464, -110, 'A')
+#(-430, 430, -464, -110, 'A'),
 
 AOIs = [
     (-235, -145, 388, 478, 'P1'),

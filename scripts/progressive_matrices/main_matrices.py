@@ -14,7 +14,7 @@ def main():
     dic_cond_B = df_utils.get_dic(settings.filepath_dic_cond_A)
     dic_pic_A = df_utils.get_dic(settings.filepath_dic_pic_A)
     dic_pic_B = df_utils.get_dic(settings.filepath_dic_pic_B)
-    dic_rules = df_utils.get_dic('mydic')
+    dic_rules = df_utils.get_dic(settings.filepath_dic_rules)
 
     default_row = {}
     for subjid in range(100,197):
@@ -76,6 +76,7 @@ def main():
                     trial = row['Trial']
                     trial_dic = dic_cond_A if block == 'A' else dic_cond_B
                     df_utils.map_conditions('Condition', row, trial_dic)
+                    df_utils.map_answer_rules('SubjectResponse_RulesViolated', row, dic_rules)
                     df_utils.subject_block(subjid,block,row)
                     df_utils.acc(row)
 
@@ -86,6 +87,7 @@ def main():
                     summary_data['Condition'] = row['Condition']
                     summary_data['ACC'] = int(row['ACC'])
                     summary_data['RT'] = float(row['RT_Solving'])
+                    summary_data['SubjectResponse_RulesViolated'] = row['SubjectResponse_RulesViolated']
 
                     if trial not in summary_gaze_data:
                         print 'Warning: missing fixation data for trial %d!' % trial

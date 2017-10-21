@@ -19,7 +19,6 @@ def ogama_coordiates(row):
 def add_aoi(row):
     x = float(row['Gaze(x)'])
     y = float(row['Gaze(y)'])
-    condition = row['Condition']
     row['AOI'] = 'N' #nowhere
     if x == settings.default_value or y == settings.default_value:
         return
@@ -33,9 +32,9 @@ def add_rules_violated(row, dic_rules):
     aoi_to_rules = df_utils_m.map_picture_aoi(row, dic_rules)
     aoi = row['AOI']
     if aoi not in aoi_to_rules:
-        row['rules_violated'] = settings.default_value
+        row['RulesViolated'] = row['AOI']
     else:
-        row['rules_violated'] = aoi_to_rules[aoi][1]
+        row['RulesViolated'] = aoi_to_rules[aoi][1]
 
 
 def get_next_window(x, y, t, trials):
