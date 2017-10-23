@@ -62,7 +62,7 @@ filepath_dic_cond_A = os.path.join(dic_dir, 'setA_list_condition_m.txt')
 filepath_dic_cond_B = os.path.join(dic_dir, 'setB_list_conditiont_m.txt')
 filepath_dic_pic_A = os.path.join(dic_dir, 'setA_list_image_m.txt')
 filepath_dic_pic_B = os.path.join(dic_dir, 'setB_list_image_m.txt')
-filepath_dic_rules = os.path.join(dic_dir, 'answer_rules.txt')
+filepath_dic_rules = os.path.join(dic_dir, 'answer_rules_violation.txt')
 
 
 ###################################################################################
