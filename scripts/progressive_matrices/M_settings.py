@@ -11,7 +11,7 @@ gazecols = trialcols + ['Gaze(x)', 'Gaze(y)'] + timecols + xtracols
 
 pupilcols = trialcols + ['Pupil(x)', 'Pupil(y)'] + timecols + ['empty']
 blinkcols = trialcols + ['Gaze(x)', 'Gaze(y)'] + timecols
-print blinkcols
+print(blinkcols)
 behavcols = ['Trial', 'CorrectAnswer', 'ResponseClicked','SubjectResponse', 'RT_Solving',
              'RT_SolvingUnc', 'RT_Response', 'RT_ResponseUnc', 'ListAOIs']
 

@@ -18,7 +18,7 @@ def main():
 
     default_row = {}
     for subjid in range(100,197):
-        print '\n processing subject %d' %subjid
+        print('\n processing subject %d' %subjid)
         try:
             for block in ['A', 'B']:
 
@@ -30,7 +30,7 @@ def main():
                 #process ocular data
                 gaze = df_utils.read_tsv(files[0], settings.gazecols)
                 #blink = df_utils.read_tsv(files[1], settings.blinkcols)
-                print 'read %d rows' % len(gaze)
+                print('read %d rows' % len(gaze))
 
                 for row in gaze:
                     df_utils.trial_reindex(row)
@@ -61,12 +61,12 @@ def main():
 
                 #process behavioral data and summary gaze file
                 behav = df_utils.read_tsv(files[3], settings.behavcols)
-                print 'read %d rows' % len(behav)
+                print('read %d rows' % len(behav))
 
                 for row in behav:
                     row['Trial'] = int(row['Trial'])
                     trial = row['Trial']
-                    trial_dic = dic_cond_A if block == 'A' else dic_cond_B
+                    trial_dic = dic_cond_A if bSlock == 'A' else dic_cond_B
                     df_utils.map_conditions('Condition', row, trial_dic)
                     df_utils.map_answer_rules('SubjectResponse_RulesViolated', row, dic_rules)
                     df_utils.subject_block(subjid,block,row)
@@ -82,13 +82,13 @@ def main():
                     summary_data['SubjectResponse_RulesViolated'] = row['SubjectResponse_RulesViolated']
 
                     if trial not in summary_gaze_data:
-                        print 'Warning: missing fixation data for trial %d!' % trial
+                        print('Warning: missing fixation data for trial %d!' % trial)
 
                     if trial not in transition_data:
-                        print 'Warning: missing transitions for trial %d!' % trial
+                        print('Warning: missing transitions for trial %d!' % trial)
 
                     if trial in summary_gaze_data:
-                        for key, val in summary_gaze_data[trial].iteritems():
+                        for key, val in summary_gaze_data[trial].items():
                             summary_data[key] = val
 
                             # combine data from several small AOIs
@@ -149,7 +149,7 @@ def main():
                                                                                 )
 
                     if trial in transition_data:
-                        for key, val in transition_data[trial].iteritems():
+                        for key, val in transition_data[trial].items():
                             summary_data[key] = val
 
                     summary_rows.append(summary_data)
@@ -160,7 +160,7 @@ def main():
 
         except Exception as e:
             failed.append((subjid,block))
-            print 'Failed for subject ' + str(subjid) + '_' + block
+            print('Failed for subject ' + str(subjid) + '_' + block)
             raise
 
     #output the fixation data for the grid plot
