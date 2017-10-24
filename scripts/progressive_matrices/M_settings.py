@@ -23,8 +23,7 @@ summary_headers = [
     'PID', 'Block', 'Trial', 'Condition', 'ACC', 'RT',
     'TotalFixations', 'TotalFixations_N', 'TotalFixation_P', 'TotalFixations_A',
     'TotalFixTime', 'TotalFixTime_N', 'TotalFixTime_P', 'TotalFixTime_A',
-    'Time_toFirst_Fix_P', 'Time_toFirst_Fix_A',
-    'TotalTransitions', 'P-P', 'P-A', 'A-P', 'A-A'
+    'Time_toFirst_Fix_P', 'Time_toFirst_Fix_A'
 ]
 
 ###################################################################################
@@ -38,15 +37,15 @@ root_dir = '/home/bunge/bguerra/EyeTracking'
 #rawfiles_dir = os.path.join(root_dir, 'Raw_Data/Transinf_data/LSAT_T1') if isTime1==True else os.path.join(root_dir, 'Raw_Data/Transinf_data/LSAT_T2')
 
 
-rawfiles_dir = os.path.join(root_dir, 'Raw_Data/Matrices_data/LSAT_T2')
+rawfiles_dir = os.path.join(root_dir, 'Raw_Data/Matrices_data/LSAT_T1')
 
 # output directory for processed data
 #output_gaze_processed_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/preprocessed/T1') if isTime1==True else os.path.join(root_dir, 'gaze_analysis/data/transif/preprocessed/T2')
 #output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/results/T1') if isTime1==True else os.path.join(root_dir, 'gaze_analysis/data/transif/results/T2')
 
-output_gaze_processed_dir = os.path.join(root_dir, 'gaze_analysis/data/matrices/preprocessed/T2')
+output_gaze_processed_dir = os.path.join(root_dir, 'gaze_analysis/data/matrices/preprocessed/T1')
 
-output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/matrices/results/T2')
+output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/matrices/results/T1')
 
 #for testing locally
 #isTime1 = True
@@ -57,7 +56,7 @@ output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/matrices/results/T2'
 #dic_dir = root_dir
 
 # directory to dictionaries
-dic_dir = '/home/bunge/bguerra/EyeTracking/scripts/new'
+dic_dir = '/home/bunge/bguerra/Desktop/git/eyetracking/scripts/progressive_matrices/EyeTracking/scripts/new'
 filepath_dic_cond_A = os.path.join(dic_dir, 'setA_list_condition_m.txt')
 filepath_dic_cond_B = os.path.join(dic_dir, 'setB_list_conditiont_m.txt')
 filepath_dic_pic_A = os.path.join(dic_dir, 'setA_list_image_m.txt')

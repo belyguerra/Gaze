@@ -164,11 +164,11 @@ def main():
             raise
 
     #output the fixation data for the grid plot
-    output_fixationfile = os.path.join(settings.output_agg_dir, 'LSAT_M_fixations.tsv')
+    output_fixationfile = os.path.join(settings.output_agg_dir, 'LSAT_M_fixations_v1.tsv')
     df_utils.output_rows(output_fixationfile, fixation_rows)
 
     # print the summary file
-    output_summaryfile = os.path.join(settings.output_agg_dir, 'LSAT_M_summary_gaze.tsv')
+    output_summaryfile = os.path.join(settings.output_agg_dir, 'LSAT_M_summary_gaze_v1.tsv')
     df_utils.output_rows(output_summaryfile, summary_rows)
 
 
