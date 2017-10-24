@@ -54,10 +54,6 @@ def get_new_data_row():
     row = {}
     for val in settings.gazecols:
         row[val] = settings.default_value
-    #for val in settings.blinkcols:
-        #row[val] = settings.default_value
-    #for val in settings.pupilcols:
-        #row[val] = settings.default_value
     #for val in settings.behavcols:
         #row[val] = settings.default_value
 
@@ -154,4 +150,4 @@ def map_answer_rules(new_column, row, dic_rules):
     if rule not in dic_rules:
         raise Exception('rule associated with answer picture %s not found' % row['SubjectResponse'])
     else:
-        row[new_column] = dic_rules[row['SubjectResponse']
+        row[new_column] = dic_rules[row['SubjectResponse']]
