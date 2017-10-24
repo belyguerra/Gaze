@@ -102,23 +102,6 @@ def acc(row):
     #raise exception if behavioral information is missing?
     row['ACC'] = 1 if row['CorrectAnswer'] == row['SubjectResponse'] else 0
 
-# helpful functions for calcuating summary measures
-def combine_vals(val1, val2):
-    if val1 == settings.default_value:
-        return val2
-    if val2 == settings.default_value:
-        return val1
-
-    return val1 + val2
-
-def min_vals(val1, val2):
-    if val1 == settings.default_value:
-        return val2
-    if val2 == settings.default_value:
-        return val1
-
-    return min(val1, val2)
-
 # write out function to
 def output_rows(filepath, rows):
     if len(rows) == 0:
