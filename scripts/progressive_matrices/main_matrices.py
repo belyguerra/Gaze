@@ -94,62 +94,62 @@ def main():
                         for key, val in summary_gaze_data[trial].items():
                             summary_data[key] = val
 
-                            # combine data from several small AOIs
-                            summary_data['TotalFixations_A'] = df_utils.combine_vals(
-                                summary_data['TotalFixations_A_rv_0'],
-                                summary_data['TotalFixations_A_rv_1'],
-                                summary_data['TotalFixations_A_rv_2'],
-                                summary_data['TotalFixations_A_rv_3']
-                            )
+                        # combine data from several small AOIs
+                        summary_data['TotalFixations_A'] = df_utils.combine_vals(
+                            summary_data['TotalFixations_A_rv_0'],
+                            summary_data['TotalFixations_A_rv_1'],
+                            summary_data['TotalFixations_A_rv_2'],
+                            summary_data['TotalFixations_A_rv_3']
+                        )
 
-                            summary_data['TotalFixTime_A'] = df_utils.combine_vals(
-                                summary_data['TotalFixTime_A_rv_0'],
-                                summary_data['TotalFixTime_A_rv_1'],
-                                summary_data['TotalFixTime_A_rv_2'],
-                                summary_data['TotalFixTime_A_rv_3']
-                            )
+                        summary_data['TotalFixTime_A'] = df_utils.combine_vals(
+                            summary_data['TotalFixTime_A_rv_0'],
+                            summary_data['TotalFixTime_A_rv_1'],
+                            summary_data['TotalFixTime_A_rv_2'],
+                            summary_data['TotalFixTime_A_rv_3']
+                        )
 
-                            summary_data['Time_toFirst_Fix_A'] = df_utils.min_vals(
-                                summary_data['Time_toFirst_Fix_A_rv_0'],
-                                summary_data['Time_toFirst_Fix_A_rv_1'],
-                                summary_data['Time_toFirst_Fix_A_rv_2'],
-                                summary_data['Time_toFirst_Fix_A_rv_3']
-                            )
+                        summary_data['Time_toFirst_Fix_A'] = df_utils.min_vals(
+                            summary_data['Time_toFirst_Fix_A_rv_0'],
+                            summary_data['Time_toFirst_Fix_A_rv_1'],
+                            summary_data['Time_toFirst_Fix_A_rv_2'],
+                            summary_data['Time_toFirst_Fix_A_rv_3']
+                        )
 
-                            summary_data['TotalFixations_P'] = df_utils.combine_vals(
-                                summary_data['TotalFixations_P1'],
-                                summary_data['TotalFixations_P2'],
-                                summary_data['TotalFixations_P3'],
-                                summary_data['TotalFixations_P4'],
-                                summary_data['TotalFixations_P5'],
-                                summary_data['TotalFixations_P6'],
-                                summary_data['TotalFixations_P7'],
-                                summary_data['TotalFixations_P8'],
-                                summary_data['TotalFixations_PQ']
-                            )
-                            summary_data['TotalFixTime_P'] = df_utils.combine_vals(
-                                summary_data['TotalFixTime_P1'],
-                                summary_data['TotalFixTime_P2'],
-                                summary_data['TotalFixTime_P3'],
-                                summary_data['TotalFixTime_P4'],
-                                summary_data['TotalFixTime_P5'],
-                                summary_data['TotalFixTime_P6'],
-                                summary_data['TotalFixTime_P7'],
-                                summary_data['TotalFixTime_P8'],
-                                summary_data['TotalFixTime_PQ']
-                            )
+                        summary_data['TotalFixations_P'] = df_utils.combine_vals(
+                            summary_data['TotalFixations_P1'],
+                            summary_data['TotalFixations_P2'],
+                            summary_data['TotalFixations_P3'],
+                            summary_data['TotalFixations_P4'],
+                            summary_data['TotalFixations_P5'],
+                            summary_data['TotalFixations_P6'],
+                            summary_data['TotalFixations_P7'],
+                            summary_data['TotalFixations_P8'],
+                            summary_data['TotalFixations_PQ']
+                        )
+                        summary_data['TotalFixTime_P'] = df_utils.combine_vals(
+                            summary_data['TotalFixTime_P1'],
+                            summary_data['TotalFixTime_P2'],
+                            summary_data['TotalFixTime_P3'],
+                            summary_data['TotalFixTime_P4'],
+                            summary_data['TotalFixTime_P5'],
+                            summary_data['TotalFixTime_P6'],
+                            summary_data['TotalFixTime_P7'],
+                            summary_data['TotalFixTime_P8'],
+                            summary_data['TotalFixTime_PQ']
+                        )
 
-                            summary_data['Time_toFirst_Fix_P'] = df_utils.min_vals(
-                                summary_data['Time_toFirst_Fix_P1'],
-                                summary_data['Time_toFirst_Fix_P2'],
-                                summary_data['Time_toFirst_Fix_P3'],
-                                summary_data['Time_toFirst_Fix_P4'],
-                                summary_data['Time_toFirst_Fix_P5'],
-                                summary_data['Time_toFirst_Fix_P6'],
-                                summary_data['Time_toFirst_Fix_P7'],
-                                summary_data['Time_toFirst_Fix_P8'],
-                                summary_data['Time_toFirst_Fix_PQ']
-                            )
+                        summary_data['Time_toFirst_Fix_P'] = df_utils.min_vals(
+                            summary_data['Time_toFirst_Fix_P1'],
+                            summary_data['Time_toFirst_Fix_P2'],
+                            summary_data['Time_toFirst_Fix_P3'],
+                            summary_data['Time_toFirst_Fix_P4'],
+                            summary_data['Time_toFirst_Fix_P5'],
+                            summary_data['Time_toFirst_Fix_P6'],
+                            summary_data['Time_toFirst_Fix_P7'],
+                            summary_data['Time_toFirst_Fix_P8'],
+                            summary_data['Time_toFirst_Fix_PQ']
+                        )
 
                     if trial in transition_data:
                         for key, val in transition_data[trial].items():
