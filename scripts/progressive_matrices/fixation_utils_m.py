@@ -204,7 +204,7 @@ def get_transitions(rows):
 
     for trial, list_transitions in trial_to_transitions.items():
         # trial_to_transition_cnts[trial] = {t[2]:0 for t in settings.transitions}
-        trial_to_transition_cnts = {}
+        trial_to_transition_cnts[trial] = {}
         for transition in list_transitions:
             key = transition[0] + '-' + transition[1]
             if key not in trial_to_transition_cnts[trial]:
