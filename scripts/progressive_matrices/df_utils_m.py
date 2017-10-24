@@ -147,7 +147,7 @@ def map_picture_aoi(row, rule_dict, listAOIs):
 
 
 def map_answer_rules(new_column, row, dic_rules):
-    response = row['SubjectResponse']
+    response = int(row['SubjectResponse'])
     if response not in dic_rules:
         raise Exception('rule associated with answer picture %s not found' % response)
     else:
