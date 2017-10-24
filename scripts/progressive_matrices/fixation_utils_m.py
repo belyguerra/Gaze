@@ -29,7 +29,7 @@ def add_aoi(row):
             return
 
 def add_rules_violated(row, dic_rules):
-    aoi_to_rules = df_utils_m.map_picture_aoi(row, dic_rules)
+    aoi_to_rules = df_utils.map_picture_aoi(row, dic_rules)
     aoi = row['AOI']
     if aoi not in aoi_to_rules:
         row['AOI'] = row['AOI']
