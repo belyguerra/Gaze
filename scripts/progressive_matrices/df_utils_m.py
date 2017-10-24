@@ -141,7 +141,7 @@ def map_picture_aoi(row, rule_dict, listAOIs):
     picture_ids = listAOIs.split(',')
     aoi = 1
     for pic in picture_ids:
-        pic_aoi_dict['A'+str(aoi)] = (pic, rule_dict[pic])
+        pic_aoi_dict['A'+str(aoi)] = (pic, rule_dict[int(pic)])
         aoi += 1
     return pic_aoi_dict
 
