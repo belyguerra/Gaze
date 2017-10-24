@@ -25,6 +25,7 @@ def add_aoi(row):
         return
     aoi_list = settings.AOIs
     for aoi_data in aoi_list:
+        print(aoi_data[4])
         if x >= aoi_data[0] and x <= aoi_data[1] and y >= aoi_data[2] and y <= aoi_data[3]:
             row['AOI'] = aoi_data[4]
             return
