@@ -203,9 +203,12 @@ def get_transitions(rows):
     trial_to_transition_cnts = {}
 
     for trial, list_transitions in trial_to_transitions.items():
-        trial_to_transition_cnts[trial] = {t[2]:0 for t in settings.transitions}
+        # trial_to_transition_cnts[trial] = {t[2]:0 for t in settings.transitions}
+        trial_to_transition_cnts = {}
         for transition in list_transitions:
             key = transition[0] + '-' + transition[1]
+            if key not in trial_to_transition_cnts[trial]:
+                trial_to_transition_cnts[trial][key] = 0
             trial_to_transition_cnts[trial][key] += 1
 
     return trial_to_transition_cnts
