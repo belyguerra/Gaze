@@ -136,9 +136,9 @@ def output_rows(filepath, rows):
             f.write('\n')
 
 # map answer picture to position
-def map_picture_aoi(row, rule_dict):
+def map_picture_aoi(row, rule_dict, listAOIs):
     pic_aoi_dict = {}
-    picture_ids = row['ListAOIs'].split(',')
+    picture_ids = listAOIs.split(',')
     aoi = 1
     for pic in picture_ids:
         pic_aoi_dict['A'+str(aoi)] = (pic, rule_dict[pic])
