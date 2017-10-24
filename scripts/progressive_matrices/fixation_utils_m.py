@@ -32,9 +32,9 @@ def add_rules_violated(row, dic_rules):
     aoi_to_rules = df_utils_m.map_picture_aoi(row, dic_rules)
     aoi = row['AOI']
     if aoi not in aoi_to_rules:
-        row['RulesViolated'] = row['AOI']
+        row['AOI'] = row['AOI']
     else:
-        row['RulesViolated'] = aoi_to_rules[aoi][1]
+        row['AOI'] = aoi_to_rules[aoi][1]
 
 
 def get_next_window(x, y, t, trials):
