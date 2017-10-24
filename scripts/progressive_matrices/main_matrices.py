@@ -69,7 +69,7 @@ def main():
                 for row in behav:
                     row['Trial'] = int(row['Trial'])
                     trial = row['Trial']
-                    trial_dic = dic_cond_A if bSlock == 'A' else dic_cond_B
+                    trial_dic = dic_cond_A if block == 'A' else dic_cond_B
                     df_utils.map_conditions('Condition', row, trial_dic)
                     df_utils.map_answer_rules('SubjectResponse_RulesViolated', row, dic_rules)
                     df_utils.subject_block(subjid,block,row)
