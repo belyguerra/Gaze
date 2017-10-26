@@ -58,7 +58,7 @@ output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/matrices/results/T2'
 # directory to dictionaries
 dic_dir = '/home/bunge/bguerra/Desktop/git/eyetracking/gaze/scripts/progressive_matrices'
 filepath_dic_cond_A = os.path.join(dic_dir, 'setA_list_condition_m.txt')
-filepath_dic_cond_B = os.path.join(dic_dir, 'setB_list_conditiont_m.txt')
+filepath_dic_cond_B = os.path.join(dic_dir, 'setB_list_condition_m.txt')
 filepath_dic_pic_A = os.path.join(dic_dir, 'setA_list_image_m.txt')
 filepath_dic_pic_B = os.path.join(dic_dir, 'setB_list_image_m.txt')
 filepath_dic_rules = os.path.join(dic_dir, 'answer_rules_violation.txt')
