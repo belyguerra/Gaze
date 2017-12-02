@@ -296,8 +296,8 @@ def summary_gaze_data(rows):
                 'SearchTime_R': settings.default_value,
                 'VisualSearch_I' : settings.default_value,
                 'SearchTime_I': settings.default_value,
-                'VisualSearch_Itrans': settings.default_value,
-                'SearchTime_Itrans': settings.default_value
+                'VisualSearch_I_onlyI': settings.default_value,
+                'SearchTime_I_onlyI': settings.default_value
             }
             trial_to_default_vals[trial] = {}
 
@@ -326,10 +326,12 @@ def summary_gaze_data(rows):
     for trial, aois_times in trial_to_aois.items():
         trial_to_data[trial]['VisualSearch_R'],trial_to_data[trial]['SearchTime_R']  = get_visual_search(aois_times)
         trial_to_data[trial]['VisualSearch_I'],trial_to_data[trial]['SearchTime_I']  = get_last_I(aois_times)
-        trial_to_data[trial]['VisualSearch_I_trans'],trial_to_data[trial]['SearchTime_I_trans']  = get_last_Itrans(aois_times)
+        trial_to_data[trial]['VisualSearch_I_onlyI'],trial_to_data[trial]['SearchTime_I_onlyI']  = get_last_I_onlyI(aois_times)
 
     return trial_to_data
 
+#search fixations on any scale until Rel1-Rel2-Rel1 pattern
+#search time until the return on Rel1-Rel2-Rel1 pattern (so @ onset of 2nd Rel1)
 def get_visual_search(aois_times):
     visual_search = settings.default_value
     search_time = settings.default_value
@@ -337,27 +339,30 @@ def get_visual_search(aois_times):
     start = -1
     index = -1
     match_count = 0
-    for aoi, time in aois_times:
-        index += 1
 
+    for aoi, time in aois_times:
         if aoi == 'N' or aoi == 'Q':
             continue
-        elif aoi[0] != 'R':
+        index += 1
+        if aoi[0] != 'R':
             match_count = 0
             start = -1
         else:
             match_count += 1
             if start == -1:
                 start = index
-                #time_start = time
+                #time_start = time #search time to onset of 1st Rel1
 
             if match_count == 3:
                 visual_search = start
                 search_time = time
+                #search_time = time_start #search time to onset of 1st Rel1
                 break
 
     return visual_search, search_time
 
+#search fixations on scales until last fixation on an irrelevant scale
+#search time until onset of the last fixation on an irrelevant scale
 def get_last_I(aois_times):
     search_last_I = settings.default_value
     time_last_I = settings.default_value
@@ -365,6 +370,8 @@ def get_last_I(aois_times):
     index = -1
 
     for aoi, time in aois_times:
+        if aoi == 'N' or aoi == 'Q':
+            continue
         index += 1
 
         if aoi[0] == 'I':
@@ -373,30 +380,19 @@ def get_last_I(aois_times):
 
     return search_last_I, time_last_I
 
-def get_last_Itrans(aois_times):
-    search_last_Itrans = settings.default_value
-    time_last_Itrans = settings.default_value
-
-    start = -1
+#search fixations on irrel scales until last fixation on an irrelevant scale
+#search time until onset of the last fixation on an irrelevant scale
+def get_last_I_onlyI(aois_times):
+    search_last_I = settings.default_value
+    time_last_I = settings.default_value
     index = -1
-    match_count = 0
-    for aoi, time in aois_times:
-        index += 1
 
+    for aoi, time in aois_times:
         if aoi == 'N' or aoi == 'Q':
             continue
-        elif aoi[0] != 'I':
-            match_count = 0
-            start = -1
-        else:
-            match_count += 1
-            if start == -1:
-                start = index
-                #time_start = time
+        if aoi[0] == 'I':
+            index += 1
+            search_last_I = index
+            time_last_I = time
 
-            if match_count == 2:
-                search_last_Itrans = start
-                time_last_Itrans = time
-                break
-
-    return search_last_Itrans, time_last_Itrans
+    return search_last_I, time_last_I

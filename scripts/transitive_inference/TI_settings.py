@@ -17,10 +17,10 @@ behavcols = ['Trial', 'Infer', 'CorrectAnswer', 'SubjectResponse', 'ProbRel', 'R
 fixation_headers = ['PID', 'Block', 'Trial', 'Condition', 'Fixation', 'AOI', 'Fixation_Dur', 'Fixation_Start']
 
 #headers for the summary file that has aggregate data from all subjects
-gaze_headers = ['TotalFixations', 'TotalFixations_N', 'TotalFixation_R', 'TotalFixations_I', 'TotalFixations_Q',
+gaze_headers = ['TotalFixations', 'TotalFixations_N', 'TotalFixations_R', 'TotalFixations_I', 'TotalFixations_Q',
     'TotalFixTime', 'TotalFixTime_N', 'TotalFixTime_R', 'TotalFixTime_I', 'TotalFixTime_Q',
     'Time_toFirst_Fix_R', 'Time_toFirst_Fix_I', 'Time_toFirst_Fix_Q', 'VisualSearch_R', 'SearchTime_R',
-    'VisualSearch_I','SearchTime_I','VisualSearch_Itrans', 'SearchTime_Itrans',
+    'VisualSearch_I','SearchTime_I','VisualSearch_I_onlyI', 'SearchTime_I_onlyI',
     'TotalTransitions', 'Q-R', 'Q-I', 'R-R', 'R-I', 'I-I']
 
 summary_headers = ['PID', 'Block', 'Trial', 'Condition', 'ACC', 'RT']+gaze_headers
