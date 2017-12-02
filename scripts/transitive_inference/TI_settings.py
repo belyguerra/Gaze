@@ -57,7 +57,7 @@ output_agg_dir = os.path.join(root_dir, 'gaze_analysis/data/transif/results/T1')
 
 # directory to dictionaries
 #dic_dir = '/home/bunge/bguerra/EyeTracking/scripts/new'
-dic_dir = '/home/bunge/bguerra/Desktop/git/eyetracking/gaze/scripts/'
+dic_dir = '/home/bunge/bguerra/Desktop/git/eyetracking/gaze/scripts/transitive_inference/'
 filepath_dic_cond_A = os.path.join(dic_dir, 'setA_list_condition.txt')
 filepath_dic_cond_B = os.path.join(dic_dir, 'setB_list_condition.txt')
 filepath_dic_pic_A = os.path.join(dic_dir, 'setA_list_image.txt')
