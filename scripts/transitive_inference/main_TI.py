@@ -119,6 +119,11 @@ def main():
                         summary_data['R-I'] += df_utils.combine_vals(summary_data['R2-I2'], summary_data['R2-I2'])
                         summary_data['I-I'] = df_utils.combine_vals(summary_data['I1-I2'], summary_data['I2-I1'])
                         summary_data['I-I'] += df_utils.combine_vals(summary_data['I1-I1'], summary_data['I2-I2'])
+                        summary_data['Q-N'] = df_utils.combine_vals(summary_data['Q-N'], summary_data['N-Q'])
+                        summary_data['N-I'] = df_utils.combine_vals(summary_data['I1-N'], summary_data['I2-N'])
+                        summary_data['N-I'] += df_utils.combine_vals(summary_data['N-I1'], summary_data['N-I2'])
+                        summary_data['N-R'] = df_utils.combine_vals(summary_data['R1-N'], summary_data['R2-N'])
+                        summary_data['N-R'] += df_utils.combine_vals(summary_data['N-R1'], summary_data['N-R2'])
 
                     summary_rows.append(summary_data)
 
