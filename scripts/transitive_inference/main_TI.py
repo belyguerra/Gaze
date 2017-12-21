@@ -11,7 +11,7 @@ def main():
     summary_rows = []
     fixation_rows = []
     dic_cond_A = df_utils.get_trial_dic(settings.filepath_dic_cond_A)
-    dic_cond_B = df_utils.get_trial_dic(settings.filepath_dic_cond_A)
+    dic_cond_B = df_utils.get_trial_dic(settings.filepath_dic_cond_B)
     dic_pic_A = df_utils.get_trial_dic(settings.filepath_dic_pic_A)
     dic_pic_B = df_utils.get_trial_dic(settings.filepath_dic_pic_B)
 
