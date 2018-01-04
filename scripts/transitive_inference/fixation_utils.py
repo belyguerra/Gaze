@@ -227,13 +227,14 @@ def describe_fixations(rows):
         trial_times[trial_num].append(time)
 
         if trial_num not in trial_to_fixation_data:
-            trial_to_fixation_data[trial_num] = {}
+            trial_to_fixation_data[trial_num] = {
+                'condition' : condition
+            }
 
         if fixation not in trial_to_fixation_data[trial_num]:
             trial_to_fixation_data[trial_num][fixation] = {
                 'aois' : [],
-                'times' : [],
-                'condition' : condition
+                'times' : []
             }
 
         trial_to_fixation_data[trial_num][fixation]['aois'].append(aoi)
