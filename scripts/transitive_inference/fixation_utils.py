@@ -232,7 +232,8 @@ def describe_fixations(rows):
         if fixation not in trial_to_fixation_data[trial_num]:
             trial_to_fixation_data[trial_num][fixation] = {
                 'aois' : [],
-                'times' : []
+                'times' : [],
+                'condition' : condition
             }
 
         trial_to_fixation_data[trial_num][fixation]['aois'].append(aoi)
@@ -241,6 +242,7 @@ def describe_fixations(rows):
     trial_nums_sorted = sorted(trial_to_fixation_data.keys())
     for trial_num in trial_nums_sorted:
         fixations_sorted = sorted(trial_to_fixation_data[trial_num].keys())
+        condition = trial_to_fixation_data[trial_num]['condition']
         for fixation in fixations_sorted:
             aoi = Counter(trial_to_fixation_data[trial_num][fixation]['aois']).most_common()[0][0]
             max_time = max(trial_to_fixation_data[trial_num][fixation]['times'])
