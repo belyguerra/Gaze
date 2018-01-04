@@ -60,7 +60,7 @@ def get_next_window(x, y, t, trials):
 def identify_fixations(rows):
     fixs = []
     counter = 0
-    MAX_MS_BETWEEN_PTS_IN_FIXATION = np.inf #40
+    MAX_MS_BETWEEN_PTS_IN_FIXATION = 150 #40
     MIN_PTS_IN_WINDOW = 6
     MIN_MS_WINDOW = 100
     DIST_PIX = 35
