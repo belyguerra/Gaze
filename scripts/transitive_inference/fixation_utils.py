@@ -209,7 +209,7 @@ def describe_fixations(rows):
     output_fixation_data = []
     trial_to_fixation_data = {}
     trial_times = {}
-
+    trial_to_condition = {}
     for row in rows:
         aoi = row['AOI']
         fixation = int(row['Fixation'])
@@ -226,10 +226,11 @@ def describe_fixations(rows):
             trial_times[trial_num] = []
         trial_times[trial_num].append(time)
 
+        if trial_num not in trial_to_condition:
+            trial_to_condition[trial_num] = condition
+
         if trial_num not in trial_to_fixation_data:
-            trial_to_fixation_data[trial_num] = {
-                'condition' : condition
-            }
+            trial_to_fixation_data[trial_num] = {}
 
         if fixation not in trial_to_fixation_data[trial_num]:
             trial_to_fixation_data[trial_num][fixation] = {
@@ -243,7 +244,7 @@ def describe_fixations(rows):
     trial_nums_sorted = sorted(trial_to_fixation_data.keys())
     for trial_num in trial_nums_sorted:
         fixations_sorted = sorted(trial_to_fixation_data[trial_num].keys())
-        condition = trial_to_fixation_data[trial_num]['condition']
+        condition = trial_to_condition[trial_num]
         for fixation in fixations_sorted:
             aoi = Counter(trial_to_fixation_data[trial_num][fixation]['aois']).most_common()[0][0]
             max_time = max(trial_to_fixation_data[trial_num][fixation]['times'])
