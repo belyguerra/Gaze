@@ -48,9 +48,10 @@ def get_next_window(x, y, t, trials):
         xwindow.append(x[index])
         ywindow.append(y[index])
         twindow.append(t[index])
-        index += 1
         if t[index] - start_time >= MIN_TIME_IN_WINDOW:
             break
+        index += 1
+
 
     return xwindow, ywindow, twindow
 
