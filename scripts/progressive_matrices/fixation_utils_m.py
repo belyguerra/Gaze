@@ -44,20 +44,22 @@ def get_next_window(x, y, t, trials):
     twindow = t[0:1]
     current_trial = trials[0]
 
-    MAX_TIME_IN_WINDOW = 125
+    MIN_TIME_IN_WINDOW = 100
     index = 1
     start_time = twindow[0]
     while (
         # if want to enforce max num of pts in window
         #len(xwindow) < max_pts_in_window
         index < len(x)
-        and t[index] - start_time <= MAX_TIME_IN_WINDOW
         and trials[index] == current_trial
     ):
         xwindow.append(x[index])
         ywindow.append(y[index])
         twindow.append(t[index])
+        if t[index] - start_time >= MIN_TIME_IN_WINDOW:
+            break
         index += 1
+
 
     return xwindow, ywindow, twindow
 
@@ -68,8 +70,8 @@ def get_next_window(x, y, t, trials):
 def identify_fixations(rows):
     fixs = []
     counter = 0
-    MAX_MS_BETWEEN_PTS_IN_FIXATION = 40
-    MIN_PTS_IN_WINDOW = 6
+    MAX_MS_BETWEEN_PTS_IN_FIXATION = 75
+    MIN_PTS_IN_WINDOW = 0
     MIN_MS_WINDOW = 100
     DIST_PIX = 35
     MAX_OUTLIER_PTS = 1
@@ -236,6 +238,9 @@ def describe_fixations(rows):
         if trial_num not in trial_times:
             trial_times[trial_num] = []
         trial_times[trial_num].append(time)
+
+        if trial_num not in trial_to_condition:
+            trial_to_condition[trial_num] = condition
 
         if trial_num not in trial_to_fixation_data:
             trial_to_fixation_data[trial_num] = {}

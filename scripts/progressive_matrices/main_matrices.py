@@ -1,5 +1,5 @@
 import M_settings as settings #use PM_settings for matrices
-import fixation_utils_m as fixation_utils#update settings in this file for Matrices
+import fixation_utils_m as fixation_utils #update settings in this file for Matrices
 import df_utils_m as df_utils #update settings in this file for Matrices
 import os
 import sys
@@ -109,7 +109,7 @@ def main():
                             summary_data['TotalFixTime_A_rv_3']
                         ])
 
-                        summary_data['Time_toFirst_Fix_A'] = sum([
+                        summary_data['Time_toFirst_Fix_A'] = min([
                             summary_data['Time_toFirst_Fix_A_rv_0'],
                             summary_data['Time_toFirst_Fix_A_rv_1'],
                             summary_data['Time_toFirst_Fix_A_rv_2'],
