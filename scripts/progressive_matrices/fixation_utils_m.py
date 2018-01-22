@@ -239,9 +239,6 @@ def describe_fixations(rows):
             trial_times[trial_num] = []
         trial_times[trial_num].append(time)
 
-        if trial_num not in trial_to_condition:
-            trial_to_condition[trial_num] = condition
-
         if trial_num not in trial_to_fixation_data:
             trial_to_fixation_data[trial_num] = {}
 
