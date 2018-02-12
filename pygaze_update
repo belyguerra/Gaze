@@ -1,0 +1,4 @@
+git clone https://github.com/esdalmaijer/PyGaze.git
+
+#in a command prompt running as administrator
+"C:\Program Files (x86)\OpenSesame\Scripts\pip.exe" install --ignore-installed C:\Users\belyguerra\Documents\git\PyGaze
