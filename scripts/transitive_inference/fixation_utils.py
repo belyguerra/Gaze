@@ -351,15 +351,23 @@ def get_trans_int(aois_times, start):
     # first change all NQ to $
     aois = [aoi.upper() for aoi, time in aois_times]
     for aoi in aois:
-        prev = tmp_aois[-1]
+        if len(tmp_aois) > 0:
+            prev = tmp_aois[-1]
+        else:
+            prev = ''
         if aoi == 'N' and prev_aoi == 'Q':
             tmp_aois.pop()
             tmp_aois.append('$')
         elif aoi == 'Q' and prev_aoi == 'N':
             tmp_aois.pop()
             tmp_aois.append('$')
+        else:
+            tmp_aois.append(aoi)
     for aoi in tmp_aois:
-        prev = filtered_aois[-1]
+        if len(filtered_aois) > 0:
+            prev = filtered_aois[-1]
+        else:
+            prev = ''
         if aoi == 'N' and prev != 'N' and prev != '$':
             filtered_aois.pop()
         elif aoi == 'Q' and prev != 'Q' and prev != '$':
