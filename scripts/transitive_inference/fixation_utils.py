@@ -367,12 +367,12 @@ def get_trans_int(aois_times, start):
         if len(filtered_aois) > 0:
             prev = filtered_aois[-1]
         else:
-            prev = ''
-        if aoi == 'N' and prev != 'N' and prev != '$':
+            prev = None
+        if aoi == 'N' and prev != 'N' and prev != '$' and prev:
             filtered_aois.pop()
-        elif aoi == 'Q' and prev != 'Q' and prev != '$':
+        elif aoi == 'Q' and prev != 'Q' and prev != '$' and prev:
             filtered_aois.pop()
-        elif aoi == '$' and prev != 'N' and prev != 'Q' and prev != '$':
+        elif aoi == '$' and prev != 'N' and prev != 'Q' and prev != '$' and prev:
             filtered_aois.pop()
 
         filtered_aois.append(aoi)
