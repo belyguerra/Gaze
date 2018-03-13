@@ -350,49 +350,46 @@ def get_trans_int(aois_times, start):
     # first change all QN to $
     # first change all NQ to $
     aois = [aoi.upper() for aoi, time in aois_times]
+    aois = [(aoi, i) for i, aoi in enumerate(aois)]
     for aoi in aois:
         if len(tmp_aois) > 0:
-            prev = tmp_aois[-1]
+            prev = tmp_aois[-1][0]
         else:
             prev = ''
-        if aoi == 'N' and prev == 'Q':
+        if aoi[0] == 'N' and prev == 'Q':
             tmp_aois.pop()
-            tmp_aois.append('$')
-        elif aoi == 'Q' and prev == 'N':
+            tmp_aois.append(('$', aoi[1]))
+        elif aoi[0] == 'Q' and prev == 'N':
             tmp_aois.pop()
-            tmp_aois.append('$')
+            tmp_aois.append(('$', aoi[1]))
         else:
             tmp_aois.append(aoi)
     for aoi in tmp_aois:
         if len(filtered_aois) > 0:
-            prev = filtered_aois[-1]
+            prev = filtered_aois[-1][0]
         else:
             prev = None
-        if aoi == 'N' and prev != 'N' and prev != '$' and prev:
+        if aoi[0] == 'N' and prev != 'N' and prev != '$' and prev:
             filtered_aois.pop()
-        elif aoi == 'Q' and prev != 'Q' and prev != '$' and prev:
+        elif aoi[0] == 'Q' and prev != 'Q' and prev != '$' and prev:
             filtered_aois.pop()
-        elif aoi == '$' and prev != 'N' and prev != 'Q' and prev != '$' and prev:
+        elif aoi[0] == '$' and prev != 'N' and prev != 'Q' and prev != '$' and prev:
             filtered_aois.pop()
 
         filtered_aois.append(aoi)
 
     prev = None
-    max_count = 0
     count = 0
-    for aoi in filtered_aois:
-        if aoi == 'R1' and prev == 'R2':
+    for i, aoi in enumerate(filtered_aois):
+        if aoi[1] < start:
+            continue
+        if aoi[0] == 'R1' and prev == 'R2':
             count += 1
-        elif aoi == 'R2' and prev == 'R1':
+        elif aoi[0] == 'R2' and prev == 'R1':
             count += 1
-        else:
-            if count > max_count:
-                max_count = count
-            count = 0
-
         prev = aoi
 
-    return max_count
+    return count
 
 
 def get_rel_id(aois_times):
