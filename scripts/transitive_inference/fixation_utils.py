@@ -355,10 +355,10 @@ def get_trans_int(aois_times, start):
             prev = tmp_aois[-1]
         else:
             prev = ''
-        if aoi == 'N' and prev_aoi == 'Q':
+        if aoi == 'N' and prev == 'Q':
             tmp_aois.pop()
             tmp_aois.append('$')
-        elif aoi == 'Q' and prev_aoi == 'N':
+        elif aoi == 'Q' and prev == 'N':
             tmp_aois.pop()
             tmp_aois.append('$')
         else:
