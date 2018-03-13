@@ -304,6 +304,7 @@ def summary_gaze_data(rows):
                 'SearchTime_I': settings.default_value,
                 'VisualSearch_I_onlyI': settings.default_value,
                 'SearchTime_I_onlyI': settings.default_value
+                'Rel_Id' : settings.default_value
             }
             trial_to_default_vals[trial] = {}
 
@@ -330,6 +331,7 @@ def summary_gaze_data(rows):
             trial_to_data[trial][key] = start_time
 
     for trial, aois_times in trial_to_aois.items():
+        trial_to_data[trial]['Rel_Id'] = get_rel_id(aois_times)
         trial_to_data[trial]['VisualSearch_R'],trial_to_data[trial]['SearchTime_R']  = get_visual_search(aois_times)
         trial_to_data[trial]['VisualSearch_I'],trial_to_data[trial]['SearchTime_I']  = get_last_I(aois_times)
         trial_to_data[trial]['VisualSearch_I_onlyI'],trial_to_data[trial]['SearchTime_I_onlyI']  = get_last_I_onlyI(aois_times)
@@ -402,3 +404,49 @@ def get_last_I_onlyI(aois_times):
             time_last_I = time
 
     return search_last_I, time_last_I
+
+def get_rel_id(aois_times):
+    if len(aois_times) == 0:
+        return
+
+    window = []
+    window_length = len(aois_times) / 4
+    if window_length < 4:
+        window_length = 4
+    if window_length > 8:
+        window_length = 8
+
+    # first letter of aoi, and index in list, starting at 1
+    vals_we_care_about = [(aoi[0][0].upper(), i+1) for i, aoi in enumerate(aois_times)]
+    window = [v for v in vals_we_care_about[:window_length]]
+    rest = [v for v in vals_we_care_about[window_length:]]
+    found_rel_id = False
+    while True:
+        just_aois = [a[0] for a in window]
+        c = Counter(just_aois)
+        above_chance = False
+        below_or_equal_chance = True
+        chance = window_length / 4
+        for val, count in c.items():
+            if val == 'R' and count > chance:
+                above_chance = True
+            elif val != 'R' and count > chance:
+                below_or_equal_chance = False
+        if above_chance and below_or_equal_chance:
+            found_rel_id = True
+            break
+        if len(rest) == 0:
+            break
+
+        # pop off first element
+        window.pop(0)
+        new = rest.pop(0)
+        window.append(new)
+
+    if found_rel_id:
+        # get position of first R aoi
+        for aoi, index in window:
+            if aoi == 'R':
+                return index
+
+    return settings.default_value
