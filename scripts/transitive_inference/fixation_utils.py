@@ -343,14 +343,14 @@ def summary_gaze_data(rows):
 
 def get_trans_int(aois_times, start):
     if start == settings.default_value:
-        return settings.default_value
+        return 0
 
     filtered_aois = []
     tmp_aois = []
     # first change all QN to $
     # first change all NQ to $
     aois = [aoi.upper() for aoi, time in aois_times]
-    aois = [(aoi, i) for i, aoi in enumerate(aois)]
+    aois = [(aoi, i+1) for i, aoi in enumerate(aois)] # index starts at 1
     for aoi in aois:
         if len(tmp_aois) > 0:
             prev = tmp_aois[-1][0]
@@ -387,7 +387,7 @@ def get_trans_int(aois_times, start):
             count += 1
         elif aoi[0] == 'R2' and prev == 'R1':
             count += 1
-        prev = aoi
+        prev = aoi[0]
 
     return count
 
