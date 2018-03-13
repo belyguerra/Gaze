@@ -400,7 +400,7 @@ def get_rel_id(aois_times):
         return
 
     window = []
-    window_length = round(len(aois_times) / 4)
+    window_length = int(round(len(aois_times) / 4))
     if window_length < 4:
         window_length = 4
     if window_length > 8:
