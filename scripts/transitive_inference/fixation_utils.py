@@ -349,7 +349,7 @@ def get_trans_int(aois_times, start):
     tmp_aois = []
     # first change all QN to $
     # first change all NQ to $
-    aois = [aoi.upper() for aoi, time in aois_times.items()]
+    aois = [aoi.upper() for aoi, time in aois_times]
     for aoi in aois:
         prev = tmp_aois[-1]
         if aoi == 'N' and prev_aoi == 'Q':
