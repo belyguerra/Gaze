@@ -303,8 +303,8 @@ def summary_gaze_data(rows):
                 'VisualSearch_I' : settings.default_value,
                 'SearchTime_I': settings.default_value,
                 'VisualSearch_I_onlyI': settings.default_value,
-                'SearchTime_I_onlyI': settings.default_value
-                'Rel_Id' : settings.default_value
+                'SearchTime_I_onlyI': settings.default_value,
+                'Rel_Id': settings.default_value
             }
             trial_to_default_vals[trial] = {}
 
