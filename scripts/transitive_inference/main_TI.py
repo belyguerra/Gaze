@@ -135,6 +135,8 @@ def main():
                         summary_data['N-I'] += df_utils.combine_vals(summary_data['N-I1'], summary_data['N-I2'])
                         summary_data['N-R'] = df_utils.combine_vals(summary_data['R1-N'], summary_data['R2-N'])
                         summary_data['N-R'] += df_utils.combine_vals(summary_data['N-R1'], summary_data['N-R2'])
+                        summary_data['Trans_allRels'] = df_utils.combine_vals(summary_data['Trans_Rel'], summary_data['Trans_Irel'])
+                        summary_data['Trans_allRels'] += summary_data['Trans_Rel_Irel']
 
                     summary_rows.append(summary_data)
 

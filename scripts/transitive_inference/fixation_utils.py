@@ -361,7 +361,9 @@ def summary_gaze_data(rows):
 
     for trial, aois_times in trial_to_aois.items():
         trial_to_data[trial]['Rel_Id'] = get_rel_id(aois_times)
-        trial_to_data[trial]['Trans_Int'] = get_trans_int(aois_times, trial_to_data[trial]['Rel_Id'])
+        trial_to_data[trial]['Trans_Rel'] = get_trans_int(aois_times, trial_to_data[trial]['Rel_Id'])
+        trial_to_data[trial]['Trans_Rel_Irel'] = get_trans_rel_irel(aois_times, trial_to_data[trial]['Rel_Id'])
+        trial_to_data[trial]['Trans_Irel'] = get_trans_irel(aois_times, trial_to_data[trial]['Rel_Id'])
         trial_to_data[trial]['VisualSearch_R'],trial_to_data[trial]['SearchTime_R']  = get_visual_search(aois_times)
         trial_to_data[trial]['VisualSearch_I'],trial_to_data[trial]['SearchTime_I']  = get_last_I(aois_times)
         trial_to_data[trial]['VisualSearch_I_onlyI'],trial_to_data[trial]['SearchTime_I_onlyI']  = get_last_I_onlyI(aois_times)
@@ -440,6 +442,104 @@ def get_trans_int(aois_times, start):
 
     return count
 
+def get_trans_irel(aois_times, start):
+    if start == settings.default_value:
+        return 0
+
+    filtered_aois = []
+    tmp_aois = []
+    # first change all QN to $
+    # first change all NQ to $
+    aois = [aoi.upper() for aoi, time in aois_times]
+    aois = [(aoi, i+1) for i, aoi in enumerate(aois)] # index starts at 1
+    for aoi in aois:
+        if len(tmp_aois) > 0:
+            prev = tmp_aois[-1][0]
+        else:
+            prev = ''
+        if aoi[0] == 'N' and prev == 'Q':
+            tmp_aois.pop()
+            tmp_aois.append(('$', aoi[1]))
+        elif aoi[0] == 'Q' and prev == 'N':
+            tmp_aois.pop()
+            tmp_aois.append(('$', aoi[1]))
+        else:
+            tmp_aois.append(aoi)
+
+    prev_2 = ''
+    prev = ''
+    for aoi in tmp_aois:
+        if prev == 'N' or prev == 'Q' or prev == '$':
+            if prev_2.startswith('I') and aoi[0].startswith('I'):
+                filtered_aois.pop()
+        prev_2 = prev
+        prev = aoi[0]
+        filtered_aois.append(aoi)
+
+    prev = None
+    count = 0
+    for i, aoi in enumerate(filtered_aois):
+        if aoi[1] < start:
+            continue
+        if aoi[0] == 'I1' and prev == 'I2':
+            count += 1
+        elif aoi[0] == 'I2' and prev == 'I1':
+            count += 1
+        prev = aoi[0]
+
+    return count
+
+def get_trans_rel_irel(aois_times, start):
+    if start == settings.default_value:
+        return 0
+
+    filtered_aois = []
+    tmp_aois = []
+    # first change all QN to $
+    # first change all NQ to $
+    aois = [aoi.upper() for aoi, time in aois_times]
+    aois = [(aoi, i+1) for i, aoi in enumerate(aois)] # index starts at 1
+    for aoi in aois:
+        if len(tmp_aois) > 0:
+            prev = tmp_aois[-1][0]
+        else:
+            prev = ''
+        if aoi[0] == 'N' and prev == 'Q':
+            tmp_aois.pop()
+            tmp_aois.append(('$', aoi[1]))
+        elif aoi[0] == 'Q' and prev == 'N':
+            tmp_aois.pop()
+            tmp_aois.append(('$', aoi[1]))
+        else:
+            tmp_aois.append(aoi)
+
+    prev_2 = ''
+    prev = ''
+    for aoi in tmp_aois:
+        if prev == 'N' or prev == 'Q' or prev == '$':
+            if (prev_2.startswith('R') and aoi[0].startswith('I')) or \
+            (prev_2.startswith('I') and aoi[0].startswith('R')):
+                filtered_aois.pop()
+        prev_2 = prev
+        prev = aoi[0]
+        filtered_aois.append(aoi)
+
+    prev = None
+    count = 0
+    for i, aoi in enumerate(filtered_aois):
+        if aoi[1] < start:
+            continue
+        if aoi[0] == 'R1' and prev == 'I1':
+            count += 1
+        elif aoi[0] == 'R2' and prev == 'I1':
+            count += 1
+        elif aoi[0] == 'R1' and prev == 'I2':
+            count += 1
+        elif aoi[0] == 'R2' and prev == 'I2':
+            count += 1
+        prev = aoi[0]
+
+    return count
 
 def get_rel_id(aois_times):
     if len(aois_times) == 0:
