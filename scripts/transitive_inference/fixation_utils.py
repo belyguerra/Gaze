@@ -377,7 +377,7 @@ def summary_gaze_data(rows):
         suffix = '_r'
         if rel_id == settings.default_value:
             suffix = '_vs'
-        elif fix_count < rel_id:
+        elif fix_count <= rel_id:
             suffix = '_vs'
 
         trial_to_data[trial]['TotalFixations' + suffix] += 1
