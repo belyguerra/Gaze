@@ -16,7 +16,7 @@ def main():
     dic_pic_B = df_utils.get_trial_dic(settings.filepath_dic_pic_B)
 
     default_row = {}
-    for subjid in range(100,197):
+    for subjid in range(200,297):
         print('\n processing subject %d' %subjid)
         try:
             for block in ['A', 'B']:
