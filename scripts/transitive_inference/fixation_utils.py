@@ -365,8 +365,8 @@ def get_trans_int(aois_times, start):
         else:
             tmp_aois.append(aoi)
 
-    prev_2 = None
-    prev = None
+    prev_2 = ''
+    prev = ''
     for aoi in tmp_aois:
         if prev == 'N' or prev == 'Q' or prev == '$':
             if prev_2.startswith('R') and aoi[0].startswith('R'):
