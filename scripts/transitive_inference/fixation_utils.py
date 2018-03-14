@@ -364,18 +364,15 @@ def get_trans_int(aois_times, start):
             tmp_aois.append(('$', aoi[1]))
         else:
             tmp_aois.append(aoi)
-    for aoi in tmp_aois:
-        if len(filtered_aois) > 0:
-            prev = filtered_aois[-1][0]
-        else:
-            prev = None
-        if aoi[0] == 'N' and prev != 'N' and prev != '$' and prev:
-            filtered_aois.pop()
-        elif aoi[0] == 'Q' and prev != 'Q' and prev != '$' and prev:
-            filtered_aois.pop()
-        elif aoi[0] == '$' and prev != 'N' and prev != 'Q' and prev != '$' and prev:
-            filtered_aois.pop()
 
+    prev_2 = None
+    prev = None
+    for aoi in tmp_aois:
+        if prev == 'N' or prev == 'Q' or prev == '$':
+            if prev_2.startswith('R') and aoi[0].startswith('R'):
+                filtered_aois.pop()
+        prev_2 = prev
+        prev = aoi[0]
         filtered_aois.append(aoi)
 
     prev = None
