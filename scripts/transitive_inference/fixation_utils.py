@@ -285,6 +285,20 @@ def summary_gaze_data(rows):
                 'TotalFixations_I1': 0,
                 'TotalFixations_I2': 0,
                 'TotalFixations_Q': 0,
+                'TotalFixations_vs': 0,
+                'TotalFixations_N_vs': 0,
+                'TotalFixations_R1_vs': 0,
+                'TotalFixations_R2_vs': 0,
+                'TotalFixations_I1_vs': 0,
+                'TotalFixations_I2_vs': 0,
+                'TotalFixations_Q_vs': 0,
+                'TotalFixations_r': 0,
+                'TotalFixations_N_r': 0,
+                'TotalFixations_R1_r': 0,
+                'TotalFixations_R2_r': 0,
+                'TotalFixations_I1_r': 0,
+                'TotalFixations_I2_r': 0,
+                'TotalFixations_Q_r': 0,
                 'TotalFixTime': 0,
                 'TotalFixTime_N': 0,
                 'TotalFixTime_R1': 0,
@@ -292,6 +306,20 @@ def summary_gaze_data(rows):
                 'TotalFixTime_I1': 0,
                 'TotalFixTime_I2': 0,
                 'TotalFixTime_Q': 0,
+                'TotalFixTime_vs': 0,
+                'TotalFixTime_N_vs': 0,
+                'TotalFixTime_R1_vs': 0,
+                'TotalFixTime_R2_vs': 0,
+                'TotalFixTime_I1_vs': 0,
+                'TotalFixTime_I2_vs': 0,
+                'TotalFixTime_Q_vs': 0,
+                'TotalFixTime_r': 0,
+                'TotalFixTime_N_r': 0,
+                'TotalFixTime_R1_r': 0,
+                'TotalFixTime_R2_r': 0,
+                'TotalFixTime_I1_r': 0,
+                'TotalFixTime_I2_r': 0,
+                'TotalFixTime_Q_r': 0,
                 'Time_toFirst_Fix_R1': settings.default_value,
                 'Time_toFirst_Fix_R2': settings.default_value,
                 'Time_toFirst_Fix_I1': settings.default_value,
@@ -337,6 +365,30 @@ def summary_gaze_data(rows):
         trial_to_data[trial]['VisualSearch_R'],trial_to_data[trial]['SearchTime_R']  = get_visual_search(aois_times)
         trial_to_data[trial]['VisualSearch_I'],trial_to_data[trial]['SearchTime_I']  = get_last_I(aois_times)
         trial_to_data[trial]['VisualSearch_I_onlyI'],trial_to_data[trial]['SearchTime_I_onlyI']  = get_last_I_onlyI(aois_times)
+
+    prev_trial = ''
+    for row in rows:
+        trial = int(row['Trial'])
+        rel_id = trial_to_data[trial]['Rel_Id']
+        if trial != prev_trial:
+            fix_count = 1
+            prev_trial = trial
+
+        suffix = '_r'
+        if rel_id == settings.default_value:
+            suffix = '_vs'
+        elif fix_count < rel_id:
+            suffix = '_vs'
+
+        trial_to_data[trial]['TotalFixations' + suffix] += 1
+        aoi = row['AOI']
+        key = 'TotalFixations_' + aoi + suffix
+        trial_to_data[trial][key] += 1
+        duration = row['Fixation_Dur']
+        trial_to_data[trial]['TotalFixTime' + suffix] += duration
+        key = 'TotalFixTime_' + aoi + suffix
+        trial_to_data[trial][key] += duration
+        fix_count += 1
 
     return trial_to_data
 
