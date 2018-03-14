@@ -103,6 +103,15 @@ def main():
                         summary_data['Time_toFirst_Fix_R'] = df_utils.min_vals(summary_data['Time_toFirst_Fix_R1'], summary_data['Time_toFirst_Fix_R2'])
                         summary_data['Time_toFirst_Fix_I'] = df_utils.min_vals(summary_data['Time_toFirst_Fix_I1'], summary_data['Time_toFirst_Fix_I2'])
 
+                        summary_data['TotalFixations_R_vs'] = df_utils.combine_vals(summary_data['TotalFixations_R1_vs'], summary_data['TotalFixations_R2_vs'])
+                        summary_data['TotalFixations_R_r'] = df_utils.combine_vals(summary_data['TotalFixations_R1_r'], summary_data['TotalFixations_R2_r'])
+                        summary_data['TotalFixations_I_vs'] = df_utils.combine_vals(summary_data['TotalFixations_I1_vs'], summary_data['TotalFixations_I2_vs'])
+                        summary_data['TotalFixations_I_r'] = df_utils.combine_vals(summary_data['TotalFixations_I1_r'], summary_data['TotalFixations_I2_r'])
+                        summary_data['TotalFixTime_R_vs'] = df_utils.combine_vals(summary_data['TotalFixTime_R1_vs'], summary_data['TotalFixTime_R2_vs'])
+                        summary_data['TotalFixTime_R_r'] = df_utils.combine_vals(summary_data['TotalFixTime_R1_r'], summary_data['TotalFixTime_R2_r'])
+                        summary_data['TotalFixTime_I_vs'] = df_utils.combine_vals(summary_data['TotalFixTime_I1_vs'], summary_data['TotalFixTime_I2_vs'])
+                        summary_data['TotalFixTime_I_r'] = df_utils.combine_vals(summary_data['TotalFixTime_I1_r'], summary_data['TotalFixTime_I2_r'])
+
                     if trial in transition_data:
                         for key, val in transition_data[trial].items():
                             summary_data[key] = val
