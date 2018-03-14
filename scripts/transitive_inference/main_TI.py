@@ -16,7 +16,7 @@ def main():
     dic_pic_B = df_utils.get_trial_dic(settings.filepath_dic_pic_B)
 
     default_row = {}
-    for subjid in range(200,297):
+    for subjid in range(100,197):
         print('\n processing subject %d' %subjid)
         try:
             for block in ['A', 'B']:
@@ -115,17 +115,18 @@ def main():
                         summary_data['R-R_all'] += df_utils.combine_vals(summary_data['R1-R1'], summary_data['R2-R2'])
                         summary_data['R-R'] = df_utils.combine_vals(summary_data['R1-R2'], summary_data['R2-R1'])
                         summary_data['R-I'] = df_utils.combine_vals(summary_data['R1-I1'], summary_data['I1-R1'])
-                        summary_data['R-I'] += df_utils.combine_vals(summary_data['R1-I2'], summary_data['R1-I2'])
+                        summary_data['R-I'] += df_utils.combine_vals(summary_data['R1-I2'], summary_data['I2-R1'])
                         summary_data['R-I'] += df_utils.combine_vals(summary_data['R2-I1'], summary_data['R2-I1'])
-                        summary_data['R-I'] += df_utils.combine_vals(summary_data['R2-I2'], summary_data['R2-I2'])
+                        summary_data['R-I'] += df_utils.combine_vals(summary_data['R2-I2'], summary_data['I2-R2'])
+                        summary_data['I-I_all'] = df_utils.combine_vals(summary_data['I1-I2'], summary_data['I2-I1'])
+                        summary_data['I-I_all'] += df_utils.combine_vals(summary_data['I1-I1'], summary_data['I2-I2'])
                         summary_data['I-I'] = df_utils.combine_vals(summary_data['I1-I2'], summary_data['I2-I1'])
-                        summary_data['I-I'] += df_utils.combine_vals(summary_data['I1-I1'], summary_data['I2-I2'])
                         summary_data['Q-N'] = df_utils.combine_vals(summary_data['Q-N'], summary_data['N-Q'])
                         summary_data['N-I'] = df_utils.combine_vals(summary_data['I1-N'], summary_data['I2-N'])
                         summary_data['N-I'] += df_utils.combine_vals(summary_data['N-I1'], summary_data['N-I2'])
                         summary_data['N-R'] = df_utils.combine_vals(summary_data['R1-N'], summary_data['R2-N'])
                         summary_data['N-R'] += df_utils.combine_vals(summary_data['N-R1'], summary_data['N-R2'])
-
+                        
                     summary_rows.append(summary_data)
 
                     # hack for default values
