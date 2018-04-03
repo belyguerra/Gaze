@@ -3,6 +3,7 @@ import fixation_utils_m as fixation_utils #update settings in this file for Matr
 import df_utils_m as df_utils #update settings in this file for Matrices
 import os
 import sys
+import numpy as np
 
 #def main(Time='1'):
 def main():
@@ -95,28 +96,28 @@ def main():
                             summary_data[key] = val
 
                         # combine data from several small AOIs
-                        summary_data['TotalFixations_A'] = sum([
+                        summary_data['TotalFixations_A'] = np.nansum([
                             summary_data['TotalFixations_A_rv_0'],
                             summary_data['TotalFixations_A_rv_1'],
                             summary_data['TotalFixations_A_rv_2'],
                             summary_data['TotalFixations_A_rv_3']
                         ])
 
-                        summary_data['TotalFixTime_A'] = sum([
+                        summary_data['TotalFixTime_A'] = np.nansum([
                             summary_data['TotalFixTime_A_rv_0'],
                             summary_data['TotalFixTime_A_rv_1'],
                             summary_data['TotalFixTime_A_rv_2'],
                             summary_data['TotalFixTime_A_rv_3']
                         ])
 
-                        summary_data['Time_toFirst_Fix_A'] = min([
+                        summary_data['Time_toFirst_Fix_A'] = np.nanmin([
                             summary_data['Time_toFirst_Fix_A_rv_0'],
                             summary_data['Time_toFirst_Fix_A_rv_1'],
                             summary_data['Time_toFirst_Fix_A_rv_2'],
                             summary_data['Time_toFirst_Fix_A_rv_3']
                         ])
 
-                        summary_data['TotalFixations_P'] = sum([
+                        summary_data['TotalFixations_P'] = np.nansum([
                             summary_data['TotalFixations_P1'],
                             summary_data['TotalFixations_P2'],
                             summary_data['TotalFixations_P3'],
@@ -128,7 +129,7 @@ def main():
                             summary_data['TotalFixations_PQ']
                         ])
 
-                        summary_data['TotalFixTime_P'] = sum([
+                        summary_data['TotalFixTime_P'] = np.nansum([
                             summary_data['TotalFixTime_P1'],
                             summary_data['TotalFixTime_P2'],
                             summary_data['TotalFixTime_P3'],
@@ -140,7 +141,7 @@ def main():
                             summary_data['TotalFixTime_PQ']
                         ])
 
-                        summary_data['Time_toFirst_Fix_P'] = min([
+                        summary_data['Time_toFirst_Fix_P'] = np.nanmin([
                             summary_data['Time_toFirst_Fix_P1'],
                             summary_data['Time_toFirst_Fix_P2'],
                             summary_data['Time_toFirst_Fix_P3'],
@@ -151,6 +152,7 @@ def main():
                             summary_data['Time_toFirst_Fix_P8'],
                             summary_data['Time_toFirst_Fix_PQ']
                         ])
+
 
                     if trial in transition_data:
                         for key, val in transition_data[trial].items():
