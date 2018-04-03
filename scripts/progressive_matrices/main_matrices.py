@@ -18,7 +18,7 @@ def main():
     dic_rules = df_utils.get_dic(settings.filepath_dic_rules)
 
     default_row = {}
-    for subjid in range(100,197):
+    for subjid in range(200,297):
         print('\n processing subject %d' %subjid)
         try:
             for block in ['A', 'B']:
